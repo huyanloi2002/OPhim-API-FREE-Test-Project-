@@ -6,7 +6,7 @@ const MovieDetailsTrailer = ({ trailer, poster }) => {
   return (
     <React.Fragment>
       {trailer ? (
-        <div className="h-full w-full pb-2">
+        <div className="h-[200px] w-full">
           <iframe
             className="w-full rounded-md h-full bg-transparent"
             src={youtubeUrl}
@@ -17,7 +17,7 @@ const MovieDetailsTrailer = ({ trailer, poster }) => {
           ></iframe>
         </div>
       ) : (
-        <div className="h-full w-full pb-2">
+        <div className="h-[200px] w-full">
           <img src={poster} className="w-full h-full rounded-md object-cover" />
         </div>
       )}

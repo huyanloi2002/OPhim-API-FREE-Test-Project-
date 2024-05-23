@@ -4,8 +4,8 @@ import MovieDetailsActor from "./MovieDetailsActor";
 import MovieDetailsCategory from "./MovieDetailsCategory";
 import MovieDetailsTable from "./MovieDetailsTable";
 import LoadingDetails from "./Loading/LoadingDetails";
-// import MovieDetailsEpisode from "./MovieDetailsEpisode";
 import MovieDetailsTrailer from "./MovieDetailsTrailer";
+import MovieDetailsThumb from "./MovieDetailsThumb";
 
 const status = [
   { value: "completed", name: "Đã công chiếu", color: "crimson" },
@@ -23,29 +23,15 @@ const MovieInfo = () => {
   const { movieDetails, statusMovieDetails } = useSelector(
     (state) => state.movies
   );
-  // const [chooseServer, setChooseServer] = useState(0);
 
   const moreDescriptionRef = useRef(true);
 
   const { movie } = movieDetails;
 
-  // useEffect(() => {
-  //   if (movie) {
-  //     const description = document.querySelector(".description");
-  //     const descriptionContent = document.querySelector(".desription-content");
-
-  //     if (descriptionContent.clientHeight >= description.clientHeight) {
-  //       moreDescriptionRef.current = true;
-  //     } else {
-  //       moreDescriptionRef.current = false;
-  //     }
-  //   }
-  // }, [movie]);
-
   return (
     <React.Fragment>
       <div
-        className={`text-dark relative w-full ${
+        className={`text-dark relative w-full animate-[opacity_2s_ease-in-out] ${
           statusMovieDetails ? "h-[50vh]" : "h-full"
         } z-50 flex justify-center bg-secondary`}
       >
@@ -53,10 +39,9 @@ const MovieInfo = () => {
           {statusMovieDetails ? (
             <div className="w-full h-auto grid grid-cols-6  gap-5 p-2 justify-center items-start">
               <div className="col-span-2">
-                <img
-                  src={movie?.thumb_url}
-                  alt=""
-                  className="rounded-md w-full h-[520px] object-cover"
+                <MovieDetailsThumb
+                  thumb={movie?.thumb_url}
+                  name={movie?.name}
                 />
               </div>
               <div className="col-span-4 flex flex-col gap-2 w-full">
@@ -80,7 +65,7 @@ const MovieInfo = () => {
                         )
                     )}
                   </div>
-                  <div className="text-smd flex flex-col gap-3 h-[190px] ">
+                  <div className="text-smd flex flex-col gap-2 h-[200px]">
                     <div className="flex justify-between items-center cursor-default">
                       {status.map(
                         (item, index) =>
@@ -111,7 +96,9 @@ const MovieInfo = () => {
                           ))}
                       </div>
                     </div>
-                    <MovieDetailsTable data={movie} />
+                    <div className="h-[100px]">
+                      <MovieDetailsTable data={movie} />
+                    </div>
                     <div className="flex flex-col gap-2 w-full">
                       <div className="font-bold text-smd">
                         <span className="bg-primary text-secondary px-2 rounded-br-md rounded-tl-md inline-flex items-center gap-1">
@@ -128,7 +115,7 @@ const MovieInfo = () => {
                       </ul>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 w-full ">
+                  <div className="grid grid-cols-2 w-full">
                     <div className="flex flex-col gap-1 h-[240px] col-span-1 ">
                       <div className="flex flex-col gap-2 justify-start h-[120px]">
                         <div className="font-bold text-smd">
@@ -147,7 +134,7 @@ const MovieInfo = () => {
                               ))}
                         </ul>
                       </div>
-                      <div className="flex flex-col gap-1 justify-start h-[120px]">
+                      <div className="flex flex-col gap-1 justify-start h-[130px]">
                         <div className="font-bold text-smd">
                           <span className="bg-primary text-secondary px-2 rounded-br-md rounded-tl-md inline-flex items-center gap-1">
                             <i className="fa-solid fa-circle text-secondary text-[5px]"></i>
@@ -174,11 +161,21 @@ const MovieInfo = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-span-1 px-5 h-full flex items-end">
-                      <MovieDetailsTrailer
-                        trailer={movie.trailer_url}
-                        poster={movie.poster_url}
-                      />
+                    <div className="col-span-1 px-5 w-full h-full flex items-start">
+                      <div className="flex flex-col gap-2 w-full h-full justify-start">
+                        <div className="font-bold text-smd w-full">
+                          <span className="bg-primary text-secondary px-2 rounded-br-md rounded-tl-md inline-flex items-center gap-1 w-full">
+                            <i className="fa-solid fa-circle text-secondary text-[5px]"></i>
+                            <span>Trailer/Thumbnail:</span>
+                          </span>
+                        </div>
+                        <div className="h-full pb-2 animate-[opacityTrailer_4s_ease-in-out]">
+                          <MovieDetailsTrailer
+                            trailer={movie.trailer_url}
+                            poster={movie.poster_url}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
