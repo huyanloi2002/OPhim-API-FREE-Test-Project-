@@ -24,7 +24,6 @@ const MovieDetailsThumb = ({ thumb, name }) => {
           className="rounded-md object-cover h-full w-full opacity-80 group-hover:opacity-60 duration-500 transition-all ease-in-out"
         />
         <i className="fa-solid fa-play text-primary shadow-xl text-[100px] text-center absolute top-[210px] left-[136.4px] drop-shadow-xl duration-500 transition-all ease-in-out group-hover:opacity-0 "></i>
-
         <ul
           className="grid grid-cols-4 w-full gap-2 absolute bottom-0 text-light bg-gray rounded-b-md opacity-0 duration-500 transition-all ease-in-out 
         group-hover:opacity-100 "
