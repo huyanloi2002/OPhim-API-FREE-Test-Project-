@@ -33,11 +33,20 @@ const MovieDetails = () => {
 
   return (
     <React.Fragment>
-      <Helmet
-        title={`MBTV | ${
-          statusMovieDetails ? `${movie.name} (${movie.year})` : "Đang tải..."
-        }`}
-      />
+      <Helmet>
+        <title>{`MBTV | ${
+          statusMovieDetails ? `${movie?.name} (${movie?.year})` : "Đang tải..."
+        }`}</title>
+        <meta name="description" content={movie?.content} />
+        <meta
+          property="og:url"
+          content="http://localhost:5173/movie-details/xin-hay-yeu-duong-voi-ke-hai-huoc"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`${movie?.name} (${movie?.year})`} />
+        <meta property="og:description" content={movie?.content} />
+        <meta property="og:image" content={movie?.poster_url} />
+      </Helmet>
       <div>
         <Banner image={movie?.poster_url} status={statusMovieDetails} />
         <MovieInfo />

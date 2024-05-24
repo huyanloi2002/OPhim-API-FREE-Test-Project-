@@ -11,6 +11,10 @@ export default {
         "pale-white": "#FFFFFF90",
         "pri-dark": "#0a151f",
         gray: "#1c252f",
+        green: "#00cc66",
+        red: "#ff5050",
+        yellow: "#ffcc00",
+        "blue-purple": "#6699ff",
       },
       backgroundColor: {
         primary: "orange",
