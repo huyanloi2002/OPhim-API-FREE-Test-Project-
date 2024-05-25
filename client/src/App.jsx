@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import MovieList from "./components/MovieList";
 import MovieDetails from "./pages/MovieDetails";
 import NotFound from "./pages/NotFound";
+import Alert from "./components/Alert";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
@@ -42,8 +43,9 @@ const App = () => {
 
   return (
     <React.Fragment>
-      <div className="bg-secondary">
+      <div className="bg-secondary h-full relative">
         <Navbar />
+        <Alert />
         <div className="h-full">
           <Routes>
             <Route path="/" element={<MovieList />} />

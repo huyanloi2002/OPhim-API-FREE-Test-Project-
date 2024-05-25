@@ -50,13 +50,13 @@ const movieController = {
 
       apiFeatures.pagination(totalItems);
 
-      const movie = await apiFeatures.query;
+      const movies = await apiFeatures.query;
 
       res.json({
         countTotalItems,
         totalPage: Math.ceil(countTotalItems / totalItems),
-        countPageItems: movie.length,
-        movie,
+        countPageItems: movies.length,
+        movies,
       });
     } catch (err) {
       return res.status(500).json({
@@ -97,6 +97,87 @@ const movieController = {
     } catch (err) {
       return res.status(500).json({
         msg: err.message,
+      });
+    }
+  },
+
+  likeMovie: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const movie = await Movie.findById(id);
+
+      if (!movie) {
+        return res.status(400).json({
+          msg: "Movie not found!",
+          msg_vn: "Phim không tông tại!",
+          success: false,
+        });
+      }
+
+      const updateMovie = await Movie.findByIdAndUpdate(
+        id,
+        {
+          is_like: !movie.is_like,
+        },
+        { new: true }
+      );
+
+      if (updateMovie.is_like) {
+        res.status(200).json({
+          msg: "Added movie to favorites.",
+          msg_vn: "Đã thêm phim vào danh mục yêu thích",
+          success: true,
+          is_like: updateMovie.is_like,
+        });
+      } else {
+        res.status(200).json({
+          msg: "Removed movie to favorites.",
+          msg_vn: "Đã xóa phim khỏi danh mục yêu thích",
+          success: true,
+          updateMovie,
+          is_like: updateMovie.is_like,
+        });
+      }
+    } catch (err) {
+      return res.status(500).json({ msg: err.message, success: false });
+    }
+  },
+
+  getMovieById: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const movie = await Movie.findById(id);
+
+      if (!movie) {
+        return res.status(400).json({
+          msg: "Movie not found!",
+          msg_vn: "Phim không tông tại!",
+          success: false,
+        });
+      }
+
+      res.json({
+        movie,
+        success: true,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+      });
+    }
+  },
+
+  getMoviesLiked: async (req, res) => {
+    try {
+      const is_like = true;
+      const moviesLiked = await Movie.find({ is_like });
+
+      res.json({ moviesLiked });
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+        success: false,
       });
     }
   },

@@ -65,6 +65,7 @@ export default {
       animation: {
         opacity: "opacity 2s ease-in-out",
         opacityTrailer: "opacity 4s ease-in-out",
+        alert: "alert 0.5s ease-in-out",
       },
       keyframes: {
         opacity: {
@@ -74,6 +75,10 @@ export default {
         opacityTrailer: {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
+        },
+        alert: {
+          "0%": { bottom: "-40px", opacity: 0 },
+          "100%": { bottom: "15px", opacity: 1 },
         },
       },
     },

@@ -12,7 +12,7 @@ const Banner = ({ image, status }) => {
               src={image}
               alt=""
             />
-            <div className="absolute bottom-0 h-full w-full z-50 text-light bg-custom-gradient"></div>
+            <div className="absolute bottom-0 h-full w-full z-10 text-light bg-custom-gradient"></div>
           </div>
         ) : (
           <LoadingSpin />

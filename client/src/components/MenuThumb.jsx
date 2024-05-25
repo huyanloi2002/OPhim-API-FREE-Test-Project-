@@ -1,7 +1,71 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { likeMovieApi, movieByIdApi } from "../store/movies/moviesSlice";
+import { alertAction } from "../store/movies/alertSlice";
+import MenuShare from "./MenuShare";
 
 const MenuThumb = () => {
-  const [openShare, setOpenShare] = useState(false);
+  const dispatch = useDispatch();
+  const { loading, message, movieById, is_like, movieDetails } = useSelector(
+    (state) => state.movies
+  );
+  const { movie } = movieDetails;
+
+  useEffect(() => {
+    dispatch(movieByIdApi(movie._id));
+  }, [movie, dispatch, message]);
+
+  const handleCopyUrl = (dispatch) => {
+    //Lấy link url hiện tại tại trang
+    const url = window.location.href;
+    //Copy url bằng navigator clipboard
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        dispatch(
+          alertAction({
+            title: "URL đã sao chép vào khay nhớ tạm.",
+            color: "green",
+          })
+        );
+      })
+      .catch(() => {
+        dispatch(
+          alertAction({
+            title: "URL chưa sao chép vào khay nhớ tạm.",
+            color: "red",
+          })
+        );
+      });
+  };
+  const handleOpenShareFB = () => {
+    const url =
+      "https://www.facebook.com/sharer/sharer.php?u=https://www.justwatch.com/us/movies";
+
+    const title = "Chia sẻ bài viết";
+
+    const windowFeatures = "left=600,top=50,width=700,height=800";
+
+    //Mở new tab với url, title, kích thước tab
+    const newWindow = window.open(url, title, windowFeatures);
+
+    return newWindow;
+  };
+  const handleLikeMovie = ({ ...props }) => {
+    const { id, dispatch } = props;
+    dispatch(likeMovieApi(id));
+  };
+
+  useEffect(() => {
+    if (loading === "fulfilled/like") {
+      dispatch(
+        alertAction({
+          title: message,
+          color: is_like ? "green" : "red",
+        })
+      );
+    }
+  }, [dispatch, message, loading, is_like]);
 
   const menuThumb = useMemo(
     () => [
@@ -29,7 +93,7 @@ const MenuThumb = () => {
         name: "Yêu thích",
         icon: "fa-solid fa-heart",
         color: "text-red",
-        handle: () => {},
+        handle: () => handleLikeMovie({ id: movie._id, dispatch }),
         extras: [],
       },
       {
@@ -44,7 +108,7 @@ const MenuThumb = () => {
             id: 1,
             name_extra: "Sao chép liên kết",
             icon_extra: "fa-solid fa-copy",
-            handle: () => handleCopyUrl(),
+            handle: () => handleCopyUrl(dispatch),
             color: "text-[#8aa149]",
           },
           {
@@ -57,54 +121,15 @@ const MenuThumb = () => {
         ],
       },
     ],
-    []
+    [movie._id, dispatch]
   );
 
-  const handleCopyUrl = () => {
-    //Lấy link url hiện tại tại trang
-    const url = window.location.href;
-    //Copy url bằng navigator clipboard
-    navigator.clipboard
-      .writeText(url)
-      .then(() => {
-        alert("URL copied to clipboard");
-      })
-      .catch((err) => {
-        alert("Failed to copy URL:", err);
-      });
-  };
-
-  const handleOpenShareFB = () => {
-    const url =
-      "https://www.facebook.com/sharer/sharer.php?u=https://www.justwatch.com/us/movies";
-
-    const title = "Chia sẻ bài viết";
-
-    const windowFeatures = "left=600,top=50,width=700,height=800";
-
-    const newWindow = window.open(url, title, windowFeatures);
-
-    return newWindow;
-  };
-
   useEffect(() => {
-    const listMenu = document.querySelector(".list_menu_share");
+    const textMenuLike = document.querySelector(".text-menu-like");
+    textMenuLike.textContent = movieById.is_like ? "Đã yêu thích" : "Yêu thích";
 
-    const handleMouseOver = () => {
-      setOpenShare(true);
-    };
-    const handleMouseOut = () => {
-      setOpenShare(false);
-    };
-
-    listMenu.addEventListener("mouseover", handleMouseOver);
-    listMenu.addEventListener("mouseout", handleMouseOut);
-
-    return () => {
-      listMenu.removeEventListener("mouseover", handleMouseOver);
-      listMenu.removeEventListener("mouseout", handleMouseOut);
-    };
-  }, []);
+    return () => {};
+  }, [movieById]);
 
   return (
     <React.Fragment>
@@ -116,39 +141,23 @@ const MenuThumb = () => {
           <div
             className={`col-span-1 text-center cursor-pointer list_menu_${item.key} group/list_menu`}
             key={index}
+            onClick={item.handle}
           >
             <span className="inline-flex flex-col py-5 gap-1">
               <i
-                className={`${item.icon} text-xl24 ${item.color} opacity-70 group-hover/list_menu:opacity-100 group-hover/list_menu:scale-125 duration-200 transition-all ease-in-out `}
+                className={`${item.icon} text-xl24 ${
+                  movieById.is_like && item.key === "like"
+                    ? `opacity-100 scale-125 ${item.color}`
+                    : "opacity-70"
+                } group-hover/list_menu:opacity-100 group-hover/list_menu:scale-125 duration-200 transition-all ease-in-out `}
               ></i>
-              <p className="text-smd font-bold text-light">{item.name}</p>
+              <p
+                className={`text-smd font-bold text-light text-menu-${item.key}`}
+              >
+                {item.name}
+              </p>
             </span>
-            {openShare && (
-              <div>
-                <div
-                  className="absolute top-[-30px] extra_menu"
-                  style={{ right: `-${item.extras.length * 7}px` }}
-                >
-                  <div className="grid grid-cols-2 gap-2 items-center px-3 bg-light rounded-full h-[40px] shadow-2xl">
-                    {item.extras &&
-                      item.extras.length > 0 &&
-                      item.extras.map((extra) => (
-                        <span
-                          className="inline-flex col-span-1"
-                          key={extra.id}
-                          title={extra.name_extra}
-                          onClick={extra.handle}
-                        >
-                          <li
-                            className={`${extra.icon_extra} text-xl px-2 text-secondary ${extra.color} opacity-90 hover:opacity-100 hover:scale-105 duration-100 transition-all ease-in-out`}
-                          ></li>
-                        </span>
-                      ))}
-                  </div>
-                </div>
-                <div className="absolute bottom-[70px] right-[30px] z-50 border-t-[10px] border-t-light border-b-0 border-l-[10px] border-r-[10px] border-r-transparent border-l-transparent w-0 h-0"></div>
-              </div>
-            )}
+            <MenuShare data={item.extras} />
           </div>
         ))}
       </div>

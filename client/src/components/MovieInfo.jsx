@@ -32,8 +32,8 @@ const MovieInfo = () => {
     <React.Fragment>
       <div
         className={`text-dark relative w-full animate-[opacity_2s_ease-in-out] ${
-          statusMovieDetails ? "h-[50vh]" : "h-full"
-        } z-50 flex justify-center bg-secondary`}
+          statusMovieDetails ? "h-[47vh]" : "h-full"
+        } z-20 flex justify-center bg-secondary`}
       >
         <div className="w-[60%] h-full absolute top-[-100px] rounded-t-xl bg-secondary shadow-md text-light p-3">
           {statusMovieDetails ? (
