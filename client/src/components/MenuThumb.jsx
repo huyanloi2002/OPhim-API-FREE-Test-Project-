@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { likeMovieApi, movieByIdApi } from "../store/movies/moviesSlice";
-import { alertAction } from "../store/movies/alertSlice";
+import { alertAction } from "../store/alert/alertSlice";
 import MenuShare from "./MenuShare";
 
 const MenuThumb = () => {

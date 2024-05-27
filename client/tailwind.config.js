@@ -22,11 +22,13 @@ export default {
         dark: "black",
         light: "white",
         "gray-transparent": "#0009",
-        red: "crimson",
+        green: "#00cc66",
+        red: "#ff5050",
         "pale-white": "#FFFFFF90",
         loading: "bg-slate-800",
         "pri-dark": "#0a151f",
         gray: "#1c252f",
+        input: "#eee",
       },
       borderColor: {
         primary: "orange",
@@ -36,6 +38,8 @@ export default {
         "pale-white": "#FFFFFF90",
         "pri-dark": "#0a151f",
         gray: "#1c252f",
+        green: "#00cc66",
+        red: "#ff5050",
       },
       fontSize: {
         xsm: "10px",

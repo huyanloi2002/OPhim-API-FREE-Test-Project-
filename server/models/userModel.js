@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    username: {
+    email: {
       type: String,
       require: true,
       unique: true,
@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema(
         default:
           "https://res.cloudinary.com/buidoanquanghuy19112002/image/upload/v1687239045/delishipexpress/2048px-OOjs_UI_icon_userAvatar.svg_zdrzhi.png",
       },
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
     },
     isActive: {
       type: Boolean,
