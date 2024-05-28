@@ -3,11 +3,13 @@ import Form from "../components/Form";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../store/users/authSlice";
+import { formLoginValidate } from "../utils/formValidate";
 
 const Login = () => {
   const dispatch = useDispatch();
   const { loading, success, type } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const [validate, setValidate] = useState({});
 
   const userState = {
     email: "",
@@ -21,16 +23,29 @@ const Login = () => {
     setUser({ ...user, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(loginAction(user));
+    if (validate.success) {
+      dispatch(loginAction(user));
+    }
   };
+
+  useEffect(() => {
+    const loginValidate = async () => {
+      const result = await formLoginValidate({ ...user });
+      setValidate(result);
+    };
+    loginValidate();
+
+    return () => {};
+  }, [user]);
 
   useEffect(() => {
     if (success && type === "login") {
       navigate("/");
     }
+    return () => {};
   }, [success, navigate, type]);
 
   return (
@@ -42,27 +57,45 @@ const Login = () => {
               Đăng nhập
             </p>
             <Form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-              <div className="flex flex-col relative justify-center">
-                <i className="fa-solid fa-envelope absolute p-2 m-1 bg-secondary text-light rounded-full text-sm"></i>
+              <div className="flex flex-col relative justify-start">
+                <i className="fa-solid fa-envelope absolute p-[0.60rem] m-1 bg-secondary text-light rounded-full text-sm"></i>
                 <input
                   type="email"
                   name="email"
-                  className="pl-10 pr-7 py-2 text-smd tracking-wide font-mdbold outline-none rounded-full bg-input border-2 border-transparent"
+                  className={`pl-10 pr-7 py-2 text-smd tracking-wide font-mdbold outline-none rounded-full bg-input border-2 ${
+                    !validate?.success &&
+                    validate?.type === "email" &&
+                    "border-red"
+                  } `}
                   placeholder="Email"
                   value={user.email}
                   onChange={(e) => handleChange(e)}
                 />
+                {!validate.success && validate.type === "email" && (
+                  <span className="text-xsm font-bold px-2 pt-[0.15rem] text-red italic">
+                    {validate.message && `*${validate.message}`}
+                  </span>
+                )}
               </div>
-              <div className="flex flex-col relative justify-center">
-                <i className="fa-solid fa-lock absolute p-2 m-1 bg-secondary text-light rounded-full text-sm"></i>
+              <div className="flex flex-col relative justify-start">
+                <i className="fa-solid fa-lock absolute p-[0.60rem] m-1 bg-secondary text-light rounded-full text-sm"></i>
                 <input
                   type="password"
                   name="password"
-                  className="pl-10 pr-7 py-2 text-smd tracking-wide font-mdbold outline-none rounded-full bg-input border-2 border-transparent"
+                  className={`pl-10 pr-7 py-2 text-smd tracking-wide font-mdbold outline-none rounded-full bg-input border-2 ${
+                    !validate?.success &&
+                    validate?.type === "password" &&
+                    "border-red"
+                  } `}
                   placeholder="Password"
                   value={user.password}
                   onChange={(e) => handleChange(e)}
                 />
+                {!validate.success && validate.type === "password" && (
+                  <span className="text-xsm font-bold px-2 pt-[0.15rem] text-red italic">
+                    {validate.message && `*${validate.message}`}
+                  </span>
+                )}
               </div>
               <div className="w-full flex flex-col items-center gap-2">
                 <button

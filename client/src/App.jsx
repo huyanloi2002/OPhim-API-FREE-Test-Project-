@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "./styles/App.css";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
@@ -9,7 +9,7 @@ import MovieDetails from "./pages/MovieDetails";
 import NotFound from "./pages/NotFound";
 import Alert from "./components/Alert";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   imagePathAction,
   paginationAction,
@@ -19,11 +19,9 @@ import { useSearchParams } from "react-router-dom";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { success, type } = useSelector((state) => state.auth);
   const [searchParams] = useSearchParams();
   const pageParams = searchParams.get("page");
   const keywordParams = searchParams.get("keyword");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApiMovie = async () => {
@@ -46,12 +44,6 @@ const App = () => {
   }, [dispatch, pageParams, keywordParams]);
 
   const firstLogin = localStorage.getItem("firstLogin");
-
-  useEffect(() => {
-    if (success && type === "login") {
-      navigate("/");
-    }
-  }, [success, navigate, type]);
 
   return (
     <React.Fragment>

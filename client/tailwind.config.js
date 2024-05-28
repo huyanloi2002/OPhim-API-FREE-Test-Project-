@@ -81,8 +81,8 @@ export default {
           "100%": { opacity: 1 },
         },
         alert: {
-          "0%": { bottom: "-40px", opacity: 0 },
-          "100%": { bottom: "15px", opacity: 1 },
+          "0%": { bottom: "-60px", opacity: 0 },
+          "100%": { bottom: "-15px", opacity: 1 },
         },
       },
     },

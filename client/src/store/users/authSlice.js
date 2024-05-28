@@ -7,7 +7,6 @@ const initialState = {
   message: "",
   success: false,
   type: "",
-  nameValue: "",
 };
 
 export const loginAction = createAsyncThunk(
@@ -40,6 +39,11 @@ export const registerAction = createAsyncThunk(
 const authSlice = createSlice({
   name: "user",
   initialState,
+  reducers: {
+    clearState: (state) => {
+      (state.message = ""), (state.success = false), (state.type = "");
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginAction.pending, (state) => {
@@ -53,12 +57,10 @@ const authSlice = createSlice({
         state.message = action.payload.msg_vn;
         state.success = action.payload.success;
         state.type = "login";
-        state.nameValue = action.payload.nameValue;
       })
       .addCase(loginAction.rejected, (state, action) => {
         state.loading = false;
         state.message = action.payload.msg_vn;
-        state.nameValue = action.payload.nameValue;
         state.success = false;
         state.type = "login";
       })
@@ -72,14 +74,12 @@ const authSlice = createSlice({
         state.message = action.payload.msg_vn;
         state.success = action.payload.success;
         state.type = "register";
-        state.nameValue = action.payload.nameValue;
       })
       .addCase(registerAction.rejected, (state, action) => {
         state.loading = false;
         state.success = false;
         state.message = action.payload.msg_vn;
         state.type = "register";
-        state.nameValue = action.payload.nameValue;
       });
   },
 });

@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import Form from "../components/Form";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerAction } from "../store/users/authSlice";
+import { registerAction, clearState } from "../store/users/authSlice";
 import { alertAction } from "../store/alert/alertSlice";
+import { formRegisterValidate } from "../utils/formValidate";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { loading, success, message } = useSelector((state) => state.auth);
+  const { loading, success, message, type } = useSelector(
+    (state) => state.auth
+  );
   const navigate = useNavigate();
+  const [validate, setValidate] = useState({});
 
   const userState = {
     email: "",
@@ -23,23 +27,38 @@ const Register = () => {
     setUser({ ...user, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(registerAction(user));
+    if (validate.success) {
+      dispatch(registerAction(user));
+    }
   };
 
   useEffect(() => {
-    if (!loading && success) {
+    const registerValidate = async () => {
+      const result = await formRegisterValidate({ ...user });
+      setValidate(result);
+    };
+    registerValidate();
+
+    return () => {};
+  }, [user]);
+
+  useEffect(() => {
+    if (success && type === "register") {
       dispatch(
         alertAction({
           title: message,
           color: "green",
         })
       );
+      dispatch(clearState());
       navigate("/login");
     }
-  }, [success, dispatch, message, loading, navigate]);
+    return () => {};
+  }, [message, type, success, dispatch, navigate]);
+  console.log(validate?.success, validate?.messgae);
   return (
     <React.Fragment>
       <div className="fixed top-0 z-20 w-full h-full flex justify-center items-center bg-[#0007]">
@@ -52,49 +71,64 @@ const Register = () => {
                 <input
                   type="email"
                   name="email"
-                  className={`pl-10 pr-7 py-2 text-smd tracking-wide font-mdbold outline-none rounded-full bg-input border-2 border-transparent`}
+                  className={`pl-10 pr-7 py-2 text-smd tracking-wide font-mdbold outline-none rounded-full bg-input border-2 ${
+                    !validate?.success &&
+                    validate?.type === "email" &&
+                    "border-red"
+                  } `}
                   placeholder="Email"
                   value={user.email}
                   onChange={(e) => handleChange(e)}
                 />
-                {/* {!success && nameValue === "email" && (
-                  <span className="text-xsm font-bold px-2 text-red italic">
-                    {`*${message}`}
+                {!validate?.success && validate?.type === "email" && (
+                  <span className="text-xsm font-bold px-2 pt-[0.15rem] text-red italic">
+                    {validate?.message && `*${validate?.message}`}
                   </span>
-                )} */}
+                )}
               </div>
               <div className="flex flex-col relative justify-start">
                 <i className="fa-solid fa-lock absolute p-[0.60rem] m-1 bg-secondary text-light rounded-full text-sm"></i>
                 <input
                   type="password"
                   name="password"
-                  className={`pl-10 pr-7 py-2 text-smd tracking-wide font-mdbold outline-none rounded-full bg-input border-2 border-transparent`}
+                  className={`pl-10 pr-7 py-2 text-smd tracking-wide font-mdbold outline-none rounded-full bg-input border-2 ${
+                    !validate?.success &&
+                    validate?.type === "password" &&
+                    "border-red"
+                  }
+                  `}
                   placeholder="Password"
                   value={user.password}
                   onChange={(e) => handleChange(e)}
                 />
-                {/* {!success && nameValue === "password" && (
-                  <span className="text-xsm font-bold px-2 text-red italic">
-                    {`*${message}`}
+                {!validate?.success && validate?.type === "password" && (
+                  <span className="text-xsm font-bold px-2 pt-[0.15rem] text-red italic">
+                    {validate?.message && `*${validate?.message}`}
                   </span>
-                )} */}
+                )}
               </div>
               <div className="flex flex-col relative justify-start">
                 <i className="fa-solid fa-key absolute p-[0.60rem] m-1 bg-secondary text-light rounded-full text-sm"></i>
                 <input
                   type="password"
                   name="confirm_password"
-                  className={`pl-10 pr-7 py-2 text-smd tracking-wide font-mdbold outline-none rounded-full bg-input border-2 border-transparent`}
+                  className={`pl-10 pr-7 py-2 text-smd tracking-wide font-mdbold outline-none rounded-full bg-input border-2 ${
+                    !validate?.success &&
+                    validate?.type === "confirm_password" &&
+                    "border-red"
+                  } `}
                   placeholder="Confirm password"
                   value={user.confirm_password}
                   onChange={(e) => handleChange(e)}
                 />
-                {/* {!success && nameValue === "confirm_password" && (
-                  <span className="text-xsm font-bold px-2 text-red italic">
-                    {`*${message}`}
-                  </span>
-                )} */}
+                {!validate?.success &&
+                  validate?.type === "confirm_password" && (
+                    <span className="text-xsm font-bold px-2 pt-[0.15rem] text-red italic">
+                      {validate?.message && `*${validate?.message}`}
+                    </span>
+                  )}
               </div>
+
               <div className="w-full flex flex-col items-center gap-2">
                 <button
                   type="submit"

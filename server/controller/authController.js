@@ -15,7 +15,6 @@ const authController = {
           msg: "Please enter your email!",
           msg_vn: "Vui lòng nhập email!",
           success: false,
-          nameValue: "email",
         });
       }
 
@@ -26,7 +25,6 @@ const authController = {
           msg: "This email is not valid!",
           msg_vn: "Email này không hợp lệ!",
           success: false,
-          nameValue: "email",
         });
       }
 
@@ -35,7 +33,6 @@ const authController = {
           msg: "Please enter your password!",
           msg_vn: "Vui lòng nhập mật khẩu!",
           success: false,
-          nameValue: "password",
         });
       }
 
@@ -44,7 +41,6 @@ const authController = {
           msg: "Password less than 6 characters",
           msg_vn: "Mật khẩu ít hơn 6 ký tự!",
           success: false,
-          nameValue: "password",
         });
       }
 
@@ -53,7 +49,6 @@ const authController = {
           msg: "Confirm password is incorrect with password!",
           msg_vn: "Mật khẩu xác nhận không trùng khớp!",
           success: false,
-          nameValue: "confirm_password",
         });
       }
 
@@ -64,7 +59,6 @@ const authController = {
           msg: "This email is exist!",
           msg_vn: "Email này đã được đăng ký!",
           success: false,
-          nameValue: "email",
         });
       }
 
@@ -104,7 +98,6 @@ const authController = {
         msg: "Please enter your email!",
         msg_vn: "Vui lòng nhập email!",
         success: false,
-        nameValue: "email",
       });
     }
 
@@ -113,7 +106,6 @@ const authController = {
         msg: "Please enter your password!",
         msg_vn: "Vui lòng nhập password!",
         success: false,
-        nameValue: "password",
       });
     }
 
@@ -122,7 +114,6 @@ const authController = {
         msg: "Password less than 6 characters!",
         msg_vn: "Mật khẩu ít hơn 6 ký tự!",
         success: false,
-        nameValue: "password",
       });
     }
 
@@ -133,7 +124,6 @@ const authController = {
         msg: "This email is not exist!",
         msg_vn: "Email này không tồn tại!",
         success: false,
-        nameValue: "email",
       });
     }
     const isMatchPassword = await bcrypt.compare(password, user.password);
@@ -143,7 +133,6 @@ const authController = {
         msg: "Password is not correct!",
         msg_vn: "Mật khẩu không đúng!",
         success: false,
-        nameValue: "password",
       });
     }
 

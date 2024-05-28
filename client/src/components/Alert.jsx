@@ -32,7 +32,7 @@ const Alert = () => {
             className={`absolute animate-[alert_0.5s_ease-in-out] ${
               isShow ? "opacity-100" : "opacity-0"
             }
-            opacity-1 left-[10px] bottom-[15px] z-50 bg-light rounded-lg cursor-default shadow-xl h-[60px] w-[300px]`}
+            opacity-1 left-[10px] bottom-[-15px] z-50 bg-light rounded-lg cursor-default shadow-xl h-[60px] w-[300px]`}
           >
             <span
               className={`inline-flex items-center justify-between gap-3 h-full w-full py-1 px-5`}
