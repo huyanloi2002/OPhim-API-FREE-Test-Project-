@@ -64,9 +64,14 @@ const authController = {
 
       const hashPassword = await bcrypt.hash(password, salt);
 
+      //Cắt email để lấy phần đầu của email làm useername
+      const username = email.split("@")[0];
+
       const newUser = new User({
         email,
+        username,
         password: hashPassword,
+        isActive: true,
       });
 
       const access_token = createAccessToken({ id: newUser.id });
@@ -160,6 +165,7 @@ const authController = {
       if (!refresToken) {
         return res.status(400).json({
           msg: "Please login now.",
+          msg_vn: "Vui lòng đăng nhập!",
           success: false,
         });
       }
@@ -171,6 +177,7 @@ const authController = {
           if (err) {
             return res.status(400).json({
               msg: "Please login now.",
+              msg_vn: "Vui lòng đăng nhập!",
               success: false,
             });
           }
@@ -180,6 +187,7 @@ const authController = {
           if (!user) {
             return res.status(400).json({
               msg: "This user does not exist.",
+              msg_vn: "Tài khoản không tồn tại!",
               success: false,
             });
           }
@@ -189,6 +197,7 @@ const authController = {
           res.json({
             access_token,
             user,
+            msg_vn: "Hoàn thành!",
           });
         }
       );

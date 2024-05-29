@@ -6,6 +6,7 @@ const initialState = {
   user: {},
   message: "",
   success: false,
+  isLogin: false,
   type: "",
 };
 
@@ -36,6 +37,19 @@ export const registerAction = createAsyncThunk(
   }
 );
 
+export const refreshTokenAction = createAsyncThunk(
+  "auth/refresh_token",
+  //Thêm _ trước rehectWithValue để có thể thay thế cho dữ liệu truyền vaò để có thể dùng rejectWithValue được
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await postDataAPI("/refresh_token");
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "user",
   initialState,
@@ -56,6 +70,7 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.message = action.payload.msg_vn;
         state.success = action.payload.success;
+        state.isLogin = true;
         state.type = "login";
       })
       .addCase(loginAction.rejected, (state, action) => {
@@ -80,6 +95,24 @@ const authSlice = createSlice({
         state.success = false;
         state.message = action.payload.msg_vn;
         state.type = "register";
+      })
+      .addCase(refreshTokenAction.pending, (state) => {
+        state.loading = true;
+        state.success = false;
+        state.type = "refresh_token";
+      })
+      .addCase(refreshTokenAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.user = action.payload.user;
+        state.isLogin = true;
+        state.type = "refresh_token";
+      })
+      .addCase(refreshTokenAction.rejected, (state, action) => {
+        state.loading = false;
+        state.success = false;
+        state.message = action.payload.msg_vn;
+        state.type = "refresh_token";
       });
   },
 });

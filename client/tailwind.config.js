@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{html,js,jsx,css}"],
+
   theme: {
     extend: {
       colors: {
@@ -81,8 +82,8 @@ export default {
           "100%": { opacity: 1 },
         },
         alert: {
-          "0%": { bottom: "-60px", opacity: 0 },
-          "100%": { bottom: "-15px", opacity: 1 },
+          "0%": { bottom: "-100px", opacity: 0 },
+          "100%": { bottom: "15px", opacity: 1 },
         },
       },
     },

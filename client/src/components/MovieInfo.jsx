@@ -27,7 +27,7 @@ const MovieInfo = () => {
   const moreDescriptionRef = useRef(true);
 
   const { movie } = movieDetails;
-
+  console.log(statusMovieDetails);
   return (
     <React.Fragment>
       <div
@@ -47,7 +47,7 @@ const MovieInfo = () => {
               <div className="col-span-4 flex flex-col gap-2 w-full">
                 <div className="flex flex-col items-start justify-center w-full">
                   <p className="text-xml font-mdbold w-[80%] truncate">{`${movie?.name} (${movie?.year})`}</p>
-                  <p className="text-lg font-thin">{`(${movie?.origin_name} - ${movie?.year})`}</p>
+                  <p className="text-lg font-thin w-[80%] truncate">{`(${movie?.origin_name} - ${movie?.year})`}</p>
                 </div>
                 <div className="w-full flex flex-col gap-2">
                   <div className="flex justify-center absolute top-0 right-0 bg-primary rounded-tr-xl rounded-bl-xl cursor-default h-[50px] w-[120px] shadow-2xl shadow-primary">

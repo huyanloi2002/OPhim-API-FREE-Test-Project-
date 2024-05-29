@@ -9,19 +9,24 @@ import MovieDetails from "./pages/MovieDetails";
 import NotFound from "./pages/NotFound";
 import Alert from "./components/Alert";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   imagePathAction,
   paginationAction,
   fetchMovieApi,
 } from "./store/movies/moviesSlice";
 import { useSearchParams } from "react-router-dom";
+import { refreshTokenAction } from "./store/users/authSlice";
 
 const App = () => {
+  const localLogin = localStorage.getItem("firstLogin");
+  const firstLogin = Boolean(localLogin);
+
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const pageParams = searchParams.get("page");
   const keywordParams = searchParams.get("keyword");
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchApiMovie = async () => {
@@ -43,29 +48,30 @@ const App = () => {
     dispatch(fetchMovieApi({ page, keyword }));
   }, [dispatch, pageParams, keywordParams]);
 
-  const firstLogin = localStorage.getItem("firstLogin");
-
+  useEffect(() => {
+    if (firstLogin) {
+      dispatch(refreshTokenAction());
+    }
+  }, [dispatch, firstLogin]);
   return (
     <React.Fragment>
-      <div className="bg-secondary h-[50vw] relative">
-        <Navbar />
+      <div className="bg-secondary h-full relative">
+        <Navbar account={user} firstLogin={firstLogin} />
         <Alert />
-        <div className="h-full">
-          <Routes>
-            <Route
-              path="/login"
-              element={!firstLogin ? <Login /> : <MovieList />}
-            />
-            <Route
-              path="/register"
-              element={!firstLogin ? <Register /> : <MovieList />}
-            />
-            <Route path="/" element={<MovieList />} />
-            <Route path="/movies" element={<MovieList />} />
-            <Route path="/movie-details/:slug" element={<MovieDetails />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route
+            path="/login"
+            element={!firstLogin ? <Login /> : <MovieList />}
+          />
+          <Route
+            path="/register"
+            element={!firstLogin ? <Register /> : <MovieList />}
+          />
+          <Route path="/" element={<MovieList />} />
+          <Route path="/movies" element={<MovieList />} />
+          <Route path="/movie-details/:slug" element={<MovieDetails />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
     </React.Fragment>
   );

@@ -19,7 +19,6 @@ const initialState = {
 export const fetchMovieApi = createAsyncThunk(
   "movies/listMovies",
   async ({ page = 1, keyword = "" }) => {
-    console.log(page, keyword);
     const res = await axios.get(
       `/api/v1/movie-test-project/movies?keyword=${keyword}&page=${page}`
     );

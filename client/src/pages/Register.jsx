@@ -61,7 +61,7 @@ const Register = () => {
   console.log(validate?.success, validate?.messgae);
   return (
     <React.Fragment>
-      <div className="fixed top-0 z-20 w-full h-full flex justify-center items-center bg-[#0007]">
+      <div className="fixed top-0 z-[49] w-full h-[100vh] flex justify-center items-center bg-[#0007]">
         <div className="grid grid-cols-1 w-[300px] h-[400px] bg-light rounded-md shadow-white shadow-md animate-[opacity_1s_ease-in-out]">
           <div className="col-span-1 flex flex-col h-full justify-center p-5 gap-4">
             <p className="text-xxl font-bold text-center uppercase">Đăng ký</p>

@@ -13,6 +13,11 @@ const userSchema = new mongoose.Schema(
       require: true,
       maxLengthh: 100,
     },
+    username: {
+      type: String,
+      unique: true,
+      maxLength: 50,
+    },
     avatar: {
       public_id: {
         type: String,
