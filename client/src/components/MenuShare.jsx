@@ -47,7 +47,7 @@ const MenuShare = ({ data }) => {
                 ))}
             </div>
           </div>
-          <div className="absolute bottom-[70px] right-[30px] z-50 border-t-[10px] border-t-light border-b-0 border-l-[10px] border-r-[10px] border-r-transparent border-l-transparent w-0 h-0"></div>
+          <div className="absolute bottom-[70px] right-[30px] z-[48] border-t-[10px] border-t-light border-b-0 border-l-[10px] border-r-[10px] border-r-transparent border-l-transparent w-0 h-0"></div>
         </div>
       )}
     </React.Fragment>

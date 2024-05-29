@@ -27,7 +27,6 @@ const MovieInfo = () => {
   const moreDescriptionRef = useRef(true);
 
   const { movie } = movieDetails;
-  console.log(statusMovieDetails);
   return (
     <React.Fragment>
       <div

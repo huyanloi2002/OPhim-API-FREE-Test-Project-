@@ -40,7 +40,8 @@ const MenuThumb = () => {
   };
   const handleOpenShareFB = () => {
     const url =
-      "https://www.facebook.com/sharer/sharer.php?u=https://www.justwatch.com/us/movies";
+      "https://www.facebook.com/sharer/sharer.php?u=" +
+      encodeURIComponent(window.location.href);
 
     const title = "Chia sẻ bài viết";
 

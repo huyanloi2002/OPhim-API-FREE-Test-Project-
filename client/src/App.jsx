@@ -15,7 +15,7 @@ import {
   paginationAction,
   fetchMovieApi,
 } from "./store/movies/moviesSlice";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { refreshTokenAction } from "./store/users/authSlice";
 
 const App = () => {
@@ -26,7 +26,8 @@ const App = () => {
   const [searchParams] = useSearchParams();
   const pageParams = searchParams.get("page");
   const keywordParams = searchParams.get("keyword");
-  const { user } = useSelector((state) => state.auth);
+  const { user, success, type } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApiMovie = async () => {
@@ -53,6 +54,14 @@ const App = () => {
       dispatch(refreshTokenAction());
     }
   }, [dispatch, firstLogin]);
+
+  useEffect(() => {
+    if (success && type === "login") {
+      navigate("/");
+    }
+    return () => {};
+  }, [success, navigate, type]);
+
   return (
     <React.Fragment>
       <div className="bg-secondary h-full relative">

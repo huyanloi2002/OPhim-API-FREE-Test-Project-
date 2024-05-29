@@ -212,7 +212,11 @@ const authController = {
       res.clearCookie("refreshtoken", {
         path: "/api/v1/movie-test-project/refresh_token",
       });
-      return res.json({ msg: "Logged out!", success: true });
+      return res.json({
+        msg: "Logged out!",
+        msg_vn: "Đăng xuất thành công!",
+        success: true,
+      });
     } catch (err) {
       return res.status(500).json({
         msg: err.message,

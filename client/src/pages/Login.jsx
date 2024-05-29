@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Form from "../components/Form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../store/users/authSlice";
 import { formLoginValidate } from "../utils/formValidate";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { loading, success, type } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.auth);
   const [validate, setValidate] = useState({});
 
   const userState = {
@@ -40,13 +39,6 @@ const Login = () => {
 
     return () => {};
   }, [user]);
-
-  useEffect(() => {
-    if (success && type === "login") {
-      navigate("/");
-    }
-    return () => {};
-  }, [success, navigate, type]);
 
   return (
     <React.Fragment>

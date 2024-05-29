@@ -11,6 +11,6 @@ const {
 router.post("/register", register);
 router.post("/login", login);
 router.post("/refresh_token", refreshToken);
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 module.exports = router;

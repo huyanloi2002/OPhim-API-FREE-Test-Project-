@@ -1,22 +1,20 @@
-import React, { useMemo } from "react";
+import React from "react";
 import Search from "./Search";
 import { Link } from "react-router-dom";
 import Account from "../components/Account";
+import ButtonAuth from "../components/ButtonAuth";
 
 const Navbar = ({ account, firstLogin }) => {
-  const navMenu = useMemo(
-    () => [
-      { id: 1, name: "Home", name_vn: "Trang chủ", key: "home" },
-      { id: 2, name: "Catgory", name_vn: "Thể loại", key: "category" },
-      { id: 3, name: "Country", name_vn: "Quốc gia", key: "country" },
-      { id: 4, name: "New movies", name_vn: "Phim mới", key: "new_movies" },
-      { id: 5, name: "Series movie", name_vn: "Phim bộ", key: "series_movie" },
-      { id: 6, name: "Odd movie", name_vn: "Phim lẻ", key: "odd_movie" },
-      { id: 7, name: "Theaters", name_vn: "Phim chiếu rạp", key: "theaters" },
-      { id: 8, name: "TV Show", name_vn: "TV Show", key: "tv_show" },
-    ],
-    []
-  );
+  const navMenu = [
+    { id: 1, name: "Home", name_vn: "Trang chủ", key: "home" },
+    { id: 2, name: "Catgory", name_vn: "Thể loại", key: "category" },
+    { id: 3, name: "Country", name_vn: "Quốc gia", key: "country" },
+    { id: 4, name: "New movies", name_vn: "Phim mới", key: "new_movies" },
+    { id: 5, name: "Series movie", name_vn: "Phim bộ", key: "series_movie" },
+    { id: 6, name: "Odd movie", name_vn: "Phim lẻ", key: "odd_movie" },
+    { id: 7, name: "Theaters", name_vn: "Phim chiếu rạp", key: "theaters" },
+    { id: 8, name: "TV Show", name_vn: "TV Show", key: "tv_show" },
+  ];
 
   return (
     <React.Fragment>
@@ -38,24 +36,7 @@ const Navbar = ({ account, firstLogin }) => {
           ))}
         </ul>
         <div className="w-[180px]">
-          {!firstLogin ? (
-            <div className="account flex gap-2 justify-center">
-              <Link
-                to={"/login"}
-                className="text-secondary px-4 py-1 text-smd font-bold bg-light rounded-full border-2 border-transparent"
-              >
-                Sign in
-              </Link>
-              <Link
-                to={"/register"}
-                className="text-light px-4 py-1 text-smd font-bold bg-transparent rounded-full border-2 border-light"
-              >
-                Sign up
-              </Link>
-            </div>
-          ) : (
-            <Account info={account} />
-          )}
+          {!firstLogin ? <ButtonAuth /> : <Account info={account} />}
         </div>
       </div>
     </React.Fragment>

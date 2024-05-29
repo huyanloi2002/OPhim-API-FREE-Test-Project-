@@ -50,6 +50,23 @@ export const refreshTokenAction = createAsyncThunk(
   }
 );
 
+export const logoutAction = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await postDataAPI("/logout");
+
+      if (res.data.success) {
+        localStorage.removeItem("firstLogin");
+        window.location.href("/");
+      }
+    } catch (err) {
+      // Return custom error message
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "user",
   initialState,
@@ -113,6 +130,24 @@ const authSlice = createSlice({
         state.success = false;
         state.message = action.payload.msg_vn;
         state.type = "refresh_token";
+      })
+      .addCase(logoutAction.pending, (state) => {
+        state.loading = true;
+        state.success = false;
+        state.type = "logout";
+      })
+      .addCase(logoutAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.isLogin = false;
+        state.user = {};
+        state.message = action.payload.msg_vn;
+        state.type = "logout";
+      })
+      .addCase(logoutAction.rejected, (state) => {
+        state.loading = false;
+        state.success = false;
+        state.type = "logout";
       });
   },
 });
