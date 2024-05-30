@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { postDataAPI } from "../../utils/fetchApi";
+import { postDataAPI } from "../../utils/fetchData";
 
 const initialState = {
   loading: false,
-  user: {},
-  message: "",
+  user: null,
+  access_token: null,
+  message: null,
   success: false,
   isLogin: false,
-  type: "",
+  type: null,
 };
 
 export const loginAction = createAsyncThunk(
@@ -15,7 +16,6 @@ export const loginAction = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await postDataAPI("/login", data);
-      localStorage.setItem("firstLogin", true);
       return res.data;
     } catch (err) {
       // Return custom error message
@@ -55,11 +55,7 @@ export const logoutAction = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await postDataAPI("/logout");
-
-      if (res.data.success) {
-        localStorage.removeItem("firstLogin");
-        window.location.href("/");
-      }
+      return res.data;
     } catch (err) {
       // Return custom error message
       return rejectWithValue(err.response.data);
@@ -85,6 +81,7 @@ const authSlice = createSlice({
       .addCase(loginAction.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
+        state.access_token = action.payload.access_token;
         state.message = action.payload.msg_vn;
         state.success = action.payload.success;
         state.isLogin = true;
@@ -120,8 +117,10 @@ const authSlice = createSlice({
       })
       .addCase(refreshTokenAction.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = true;
         state.user = action.payload.user;
+        state.access_token = action.payload.access_token;
+        state.message = action.payload.msg_vn;
+        state.success = action.payload.success;
         state.isLogin = true;
         state.type = "refresh_token";
       })
@@ -140,7 +139,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.success = true;
         state.isLogin = false;
-        state.user = {};
+        state.user = null;
         state.message = action.payload.msg_vn;
         state.type = "logout";
       })

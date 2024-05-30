@@ -1,87 +1,55 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./styles/App.css";
 import Navbar from "./components/Navbar";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import MovieList from "./components/MovieList";
-import MovieDetails from "./pages/MovieDetails";
-import NotFound from "./pages/NotFound";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import MovieListPage from "./pages/MovieListPage";
+import MovieDetailsPage from "./pages/MovieDetailsPage";
+import PersonalInformation from "./pages/PersonalInformation";
+import MoviesLikedPage from "./pages/MoviesLikedPage";
+import WatchListPage from "./pages/WatchListPage";
+import HistoryPage from "./pages/HistoryPage";
+import SettingsPage from "./pages/SettingsPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import PrivateRoute from "./pages/PrivateRoute";
+import HomePage from "./pages/HomePage";
 import Alert from "./components/Alert";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  imagePathAction,
-  paginationAction,
-  fetchMovieApi,
-} from "./store/movies/moviesSlice";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { refreshTokenAction } from "./store/users/authSlice";
+import { useSelector } from "react-redux";
 
 const App = () => {
-  const localLogin = localStorage.getItem("firstLogin");
-  const firstLogin = Boolean(localLogin);
-
-  const dispatch = useDispatch();
-  const [searchParams] = useSearchParams();
-  const pageParams = searchParams.get("page");
-  const keywordParams = searchParams.get("keyword");
-  const { user, success, type } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchApiMovie = async () => {
-      const res = await axios.get(
-        "https://ophim1.com/danh-sach/phim-moi-cap-nhat?page=1"
-      );
-
-      dispatch(imagePathAction(res.data.pathImage));
-      dispatch(paginationAction(res.data.pagination));
-    };
-    fetchApiMovie();
-
-    return () => {};
-  }, [dispatch]);
-
-  useEffect(() => {
-    const page = pageParams || 1;
-    const keyword = keywordParams || "";
-    dispatch(fetchMovieApi({ page, keyword }));
-  }, [dispatch, pageParams, keywordParams]);
-
-  useEffect(() => {
-    if (firstLogin) {
-      dispatch(refreshTokenAction());
-    }
-  }, [dispatch, firstLogin]);
-
-  useEffect(() => {
-    if (success && type === "login") {
-      navigate("/");
-    }
-    return () => {};
-  }, [success, navigate, type]);
-
+  const { user, isLogin } = useSelector((state) => state.auth);
+  console.log(isLogin);
   return (
     <React.Fragment>
-      <div className="bg-secondary h-full relative">
-        <Navbar account={user} firstLogin={firstLogin} />
-        <Alert />
-        <Routes>
+      <Navbar account={user} isLogin={isLogin} />
+      <Alert />
+      <Routes>
+        <Route element={<PrivateRoute />}>
           <Route
-            path="/login"
-            element={!firstLogin ? <Login /> : <MovieList />}
+            path="/personal-information"
+            element={<PersonalInformation />}
           />
-          <Route
-            path="/register"
-            element={!firstLogin ? <Register /> : <MovieList />}
-          />
-          <Route path="/" element={<MovieList />} />
-          <Route path="/movies" element={<MovieList />} />
-          <Route path="/movie-details/:slug" element={<MovieDetails />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
+          <Route path="/movies_liked" element={<MoviesLikedPage />} />
+          <Route path="/watch-list/:slug" element={<WatchListPage />} />
+          <Route path="/history" element={<HistoryPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
+        <Route
+          exact
+          path="/login"
+          element={!isLogin ? <LoginPage /> : <HomePage />}
+        />
+        <Route
+          exact
+          path="/register"
+          element={!isLogin ? <RegisterPage /> : <HomePage />}
+        />
+        <Route exact path="/" element={<HomePage />} />
+        <Route path="/movies" element={<MovieListPage />} />
+        <Route path="/movie-details/:slug" element={<MovieDetailsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </React.Fragment>
   );
 };

@@ -7,6 +7,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   font-family: var(--font-ff);
+  color: #fff;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -25,4 +26,49 @@ input:-webkit-autofill {
 input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 50px #eee inset; /*your box-shadow*/
   -webkit-text-fill-color: #333;
+}
+input {
+  color: #060d17;
+}
+
+/* Default for all viewports */
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* For viewports 1536px and wider */
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+/* For viewports 1280px to 1535.99px */
+@media (min-width: 1280px) and (max-width: 1535.99px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* For viewports 1024px to 1279.99px */
+@media (min-width: 1024px) and (max-width: 1279.99px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+/* For viewports 768px to 1023.99px */
+@media (min-width: 768px) and (max-width: 1023.99px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+/* For viewports 640px to 767.99px */
+@media (min-width: 640px) and (max-width: 767.99px) {
+  .container {
+    max-width: 640px;
+  }
 }

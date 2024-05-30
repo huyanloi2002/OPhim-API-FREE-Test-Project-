@@ -1,4 +1,4 @@
-import { postDataAPI } from "./fetchApi";
+import { postDataAPI } from "./fetchData";
 
 export const formRegisterValidate = async (data) => {
   const { email, password, confirm_password } = data;

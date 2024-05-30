@@ -14,8 +14,8 @@ const Account = ({ info }) => {
     () => [
       {
         id: 1,
-        name: "Tài khoản",
-        key: "my_account",
+        name: "Thông tin cá nhân",
+        key: "personal_infomation",
         icon: "fa-solid fa-circle-user",
         handle: () => {},
       },

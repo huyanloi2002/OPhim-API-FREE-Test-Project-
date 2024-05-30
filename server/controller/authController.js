@@ -151,7 +151,10 @@ const authController = {
     });
 
     res.json({
-      user,
+      user: {
+        ...user._doc,
+        password: "",
+      },
       access_token,
       msg: "Login successfully!",
       msg_vn: "Đăng nhập thành công!",
@@ -195,8 +198,11 @@ const authController = {
           const access_token = createAccessToken({ id: result.id });
 
           res.json({
+            user: {
+              ...user._doc,
+              password: "",
+            },
             access_token,
-            user,
             msg_vn: "Hoàn thành!",
           });
         }

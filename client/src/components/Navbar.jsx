@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Account from "../components/Account";
 import ButtonAuth from "../components/ButtonAuth";
 
-const Navbar = ({ account, firstLogin }) => {
+const Navbar = ({ account, isLogin }) => {
   const navMenu = [
     { id: 1, name: "Home", name_vn: "Trang chủ", key: "home" },
     { id: 2, name: "Catgory", name_vn: "Thể loại", key: "category" },
@@ -36,7 +36,7 @@ const Navbar = ({ account, firstLogin }) => {
           ))}
         </ul>
         <div className="w-[180px]">
-          {!firstLogin ? <ButtonAuth /> : <Account info={account} />}
+          {!isLogin ? <ButtonAuth /> : <Account info={account} />}
         </div>
       </div>
     </React.Fragment>
