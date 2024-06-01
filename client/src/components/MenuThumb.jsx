@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { likeMovieApi, movieByIdApi } from "../store/movies/moviesSlice";
-import { alertAction } from "../store/alert/alertSlice";
+import {
+  getMovieLikedAction,
+  getMovieByIdAction,
+} from "../store/actions/moviesAction";
+import { alertAction } from "../store/slices/alertSlice";
 import MenuShare from "./MenuShare";
 
 const MenuThumb = () => {
@@ -12,7 +15,7 @@ const MenuThumb = () => {
   const { movie } = movieDetails;
 
   useEffect(() => {
-    dispatch(movieByIdApi(movie._id));
+    dispatch(getMovieByIdAction(movie._id));
   }, [movie, dispatch, message]);
 
   const handleCopyUrl = (dispatch) => {
@@ -54,7 +57,7 @@ const MenuThumb = () => {
   };
   const handleLikeMovie = ({ ...props }) => {
     const { id, dispatch } = props;
-    dispatch(likeMovieApi(id));
+    dispatch(getMovieLikedAction(id));
   };
 
   useEffect(() => {

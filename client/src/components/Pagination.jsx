@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMovieApi } from "../store/movies/moviesSlice";
+import { getMoviesAction } from "../store/actions/moviesAction";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Pagination = () => {
@@ -17,7 +17,7 @@ const Pagination = () => {
 
     const handleClickPage = (item) => {
       dispatch(
-        fetchMovieApi({
+        getMoviesAction({
           keyword: keywordParams,
           page: item,
         })
@@ -83,7 +83,7 @@ const Pagination = () => {
   const handleNextPage = () => {
     let nextPage = pageParams + 1;
     dispatch(
-      fetchMovieApi({
+      getMoviesAction({
         keyword: keywordParams,
         page: nextPage,
       })
@@ -98,7 +98,7 @@ const Pagination = () => {
   const handlePrevPage = () => {
     let prevPage = pageParams - 1;
     dispatch(
-      fetchMovieApi({
+      getMoviesAction({
         keyword: keywordParams,
         page: prevPage,
       })

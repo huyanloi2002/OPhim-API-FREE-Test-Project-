@@ -1,7 +1,9 @@
 const User = require("../models/userModel");
+const Login_History = require("../models/loginHistoryModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validateEmail } = require("../utils/valueValidate");
+const requestClientIP = require("../utils/requestClientIP");
 
 let salt = bcrypt.genSaltSync(10);
 
@@ -71,7 +73,7 @@ const authController = {
         email,
         username,
         password: hashPassword,
-        isActive: true,
+        is_active: true,
       });
 
       const access_token = createAccessToken({ id: newUser.id });
@@ -141,6 +143,17 @@ const authController = {
       });
     }
 
+    //Lưu IP sau mỗi khi phiên đăng nhập
+    const requestIP = requestClientIP(req);
+    const login_history = new Login_History({
+      user_id: user._id,
+      ip: requestIP.clientIp,
+      device: requestIP.device,
+      browser: requestIP.browser,
+      login_time: new Date(),
+    });
+    await login_history.save();
+
     const access_token = createAccessToken({ id: user.id });
     const refresh_token = createRefreshToken({ id: user.id });
 
@@ -196,6 +209,13 @@ const authController = {
           }
 
           const access_token = createAccessToken({ id: result.id });
+          const refresh_token = createRefreshToken({ id: result.id });
+
+          res.cookie("refreshtoken", refresh_token, {
+            httpOnly: true,
+            path: "/api/v1/movie-test-project/refresh_token",
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+          });
 
           res.json({
             user: {

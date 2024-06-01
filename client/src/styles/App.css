@@ -8,6 +8,7 @@ body {
   box-sizing: border-box;
   font-family: var(--font-ff);
   color: #fff;
+  -webkit-font-smoothing: antialiased;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -31,6 +32,10 @@ input {
   color: #060d17;
 }
 
+input:disabled {
+  background: #0001 !important;
+}
+
 /* Default for all viewports */
 .container {
   width: 100%;
@@ -38,15 +43,15 @@ input {
   margin: 0 auto;
 }
 
-/* For viewports 1536px and wider */
-@media (min-width: 1536px) {
+/* For viewports 1348px and wider */
+@media (min-width: 1348px) {
   .container {
-    max-width: 1536px;
+    max-width: 1348px;
   }
 }
 
 /* For viewports 1280px to 1535.99px */
-@media (min-width: 1280px) and (max-width: 1535.99px) {
+@media (min-width: 1280px) and (max-width: 1347.99px) {
   .container {
     max-width: 1280px;
   }

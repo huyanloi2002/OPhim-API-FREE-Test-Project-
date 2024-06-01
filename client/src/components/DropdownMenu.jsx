@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const DropdownMenu = ({ data, children }) => {
   const [isShow, setIsShow] = useState(false);
@@ -35,16 +36,17 @@ const DropdownMenu = ({ data, children }) => {
                 {data &&
                   data.length > 0 &&
                   data.map((item, index) => (
-                    <li
-                      key={index}
-                      className="text-md font-mdbold flex cursor-pointer items-start gap-1 py-2 px-4 hover:bg-slate-100 duration-100 transition-all ease-in-out"
-                      onClick={item.handle}
-                    >
-                      <i
-                        className={`${item.icon} text-xl24 w-[30px] text-center`}
-                      ></i>
-                      <p>{item.name}</p>
-                    </li>
+                    <Link key={index} to={item.link}>
+                      <li
+                        className="text-md font-mdbold flex cursor-pointer items-start gap-1 py-2 px-4 hover:bg-slate-100 duration-100 transition-all ease-in-out"
+                        onClick={item.handle}
+                      >
+                        <i
+                          className={`${item.icon} text-xl24 w-[30px] text-center`}
+                        ></i>
+                        <p>{item.name}</p>
+                      </li>
+                    </Link>
                   ))}
               </ul>
             </div>

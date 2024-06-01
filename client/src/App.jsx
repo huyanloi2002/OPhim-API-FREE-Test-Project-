@@ -11,6 +11,7 @@ import MoviesLikedPage from "./pages/MoviesLikedPage";
 import WatchListPage from "./pages/WatchListPage";
 import HistoryPage from "./pages/HistoryPage";
 import SettingsPage from "./pages/SettingsPage";
+import MyAccountManager from "./pages/MyAccountManager";
 import NotFoundPage from "./pages/NotFoundPage";
 import PrivateRoute from "./pages/PrivateRoute";
 import HomePage from "./pages/HomePage";
@@ -18,22 +19,24 @@ import Alert from "./components/Alert";
 import { useSelector } from "react-redux";
 
 const App = () => {
-  const { user, isLogin } = useSelector((state) => state.auth);
-  console.log(isLogin);
+  const { isLogin, user } = useSelector((state) => state.auth);
+
   return (
     <React.Fragment>
       <Navbar account={user} isLogin={isLogin} />
       <Alert />
       <Routes>
         <Route element={<PrivateRoute />}>
-          <Route
-            path="/personal-information"
-            element={<PersonalInformation />}
-          />
-          <Route path="/movies_liked" element={<MoviesLikedPage />} />
-          <Route path="/watch-list/:slug" element={<WatchListPage />} />
-          <Route path="/history" element={<HistoryPage />} />
-          <Route path="settings" element={<SettingsPage />} />
+          <Route path="/my-account-manager" element={<MyAccountManager />}>
+            <Route
+              path="personal-information"
+              element={<PersonalInformation />}
+            />
+            <Route path="movies-liked" element={<MoviesLikedPage />} />
+            <Route path="watch-list/:slug" element={<WatchListPage />} />
+            <Route path="history" element={<HistoryPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+          </Route>
         </Route>
         <Route
           exact

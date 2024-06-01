@@ -16,6 +16,7 @@ export default {
         red: "#ff5050",
         yellow: "#ffcc00",
         "blue-purple": "#6699ff",
+        "green-dark": "#1abc9c",
       },
       backgroundColor: {
         primary: "orange",
@@ -24,12 +25,21 @@ export default {
         light: "white",
         "gray-transparent": "#0009",
         green: "#00cc66",
+        "green-dark": "#1abc9c",
         red: "#ff5050",
         "pale-white": "#FFFFFF90",
         loading: "bg-slate-800",
         "pri-dark": "#0a151f",
         gray: "#1c252f",
         input: "#eee",
+        "green-light": "#caffbf",
+        "red-light": "#ffadad",
+        "yellow-light": "#fdffb6",
+        "orange-light": "#ffd6a5",
+        "blue-light": "#9bf6ff",
+        "blue-dark": "#a0c4ff",
+        pink: "#ffc6ff",
+        purple: "#bdb2ff",
       },
       borderColor: {
         primary: "orange",
@@ -55,6 +65,7 @@ export default {
         xl24: "24px",
         xml: "28px",
         xxl: "30px",
+        xxl40: "40px",
         xxx: "50px",
       },
       fontWeight: {
@@ -73,6 +84,7 @@ export default {
         opacity: "opacity 2s ease-in-out",
         opacityTrailer: "opacity 4s ease-in-out",
         alert: "alert 0.5s ease-in-out",
+        "spin-border": "spin-border 1s ease-in-out",
       },
       keyframes: {
         opacity: {
@@ -86,6 +98,10 @@ export default {
         alert: {
           "0%": { bottom: "-100px", opacity: 0 },
           "100%": { bottom: "15px", opacity: 1 },
+        },
+        "spin-border": {
+          "0%": { strokeDashoffset: 0, stroke: "#1abc9c" },
+          "100%": { strokeDashoffset: -380, stroke: "#1abc9c" },
         },
       },
     },

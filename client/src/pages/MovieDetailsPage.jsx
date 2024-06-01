@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { movieDetailsAction } from "../store/movies/moviesSlice";
-
+import { movieDetailsAction } from "../store/slices/moviesSlice";
 import Banner from "../components/Banner";
 import MovieInfo from "../components/MovieInfo";
 import { Helmet } from "react-helmet";

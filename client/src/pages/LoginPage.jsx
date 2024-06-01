@@ -2,16 +2,13 @@ import React, { useEffect, useState } from "react";
 import Form from "../components/Form";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAction } from "../store/users/authSlice";
+import { loginAction } from "../store/actions/authAction";
 import { formLoginValidate } from "../utils/formValidate";
-import { alertAction } from "../store/alert/alertSlice";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { loading, success, type, message } = useSelector(
-    (state) => state.auth
-  );
+  const { isLoading } = useSelector((state) => state.auth.login);
   const [validate, setValidate] = useState({});
   const navigate = useNavigate();
 
@@ -32,6 +29,7 @@ const Login = () => {
 
     if (validate.success) {
       dispatch(loginAction(user));
+      navigate("/");
     }
   };
 
@@ -44,19 +42,6 @@ const Login = () => {
 
     return () => {};
   }, [user]);
-
-  useEffect(() => {
-    if (success && type === "login") {
-      dispatch(
-        alertAction({
-          title: message,
-          color: "green",
-        })
-      );
-      navigate("/");
-    }
-    return () => {};
-  }, [message, type, success, dispatch, navigate]);
 
   return (
     <React.Fragment>
@@ -110,10 +95,10 @@ const Login = () => {
               <div className="w-full flex flex-col items-center gap-2">
                 <button
                   type="submit"
-                  disabled={loading ? true : false}
+                  disabled={isLoading ? true : false}
                   className="rounded-full bg-primary py-2 font-bold w-[60%] text-md shadow-md duration-300 transition-all ease-in-out hover:bg-secondary hover:text-primary"
                 >
-                  {loading ? "Loading..." : "Đăng nhập"}
+                  {isLoading ? "Loading..." : "Đăng nhập"}
                 </button>
                 <span className="inline-flex gap-1 items-center">
                   <p className="text-sm text-secondary">

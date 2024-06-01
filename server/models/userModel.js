@@ -21,12 +21,16 @@ const userSchema = new mongoose.Schema(
     avatar: {
       public_id: {
         type: String,
-        default: "2048px-OOjs_UI_icon_userAvatar.svg_zdrzhi.png",
+        default: "0921fc87aa989330b8d403014bf4f340_bzfxa9",
       },
       url: {
         type: String,
         default:
-          "https://res.cloudinary.com/buidoanquanghuy19112002/image/upload/v1687239045/delishipexpress/2048px-OOjs_UI_icon_userAvatar.svg_zdrzhi.png",
+          "https://res.cloudinary.com/buidoanquanghuy19112002/image/upload/v1717125407/movies_project/avatar/0921fc87aa989330b8d403014bf4f340_bzfxa9.jpg",
+      },
+      isChange: {
+        type: Boolean,
+        default: true,
       },
     },
     role: {
@@ -34,9 +38,17 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
-    isActive: {
+    is_active: {
       type: Boolean,
       default: false,
+    },
+    isVerify: {
+      type: Boolean,
+      default: false,
+    },
+    identify: {
+      type: String,
+      default: "",
     },
   },
   {

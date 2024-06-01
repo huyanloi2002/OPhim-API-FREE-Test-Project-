@@ -1,5 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  getMovieByIdAction,
+  getMoviesAction,
+  getMovieLikedAction,
+} from "../actions/moviesAction";
 
 const initialState = {
   imagePath: "",
@@ -15,26 +19,6 @@ const initialState = {
   is_like: false,
   movieById: {},
 };
-
-export const fetchMovieApi = createAsyncThunk(
-  "movies/listMovies",
-  async ({ page = 1, keyword = "" }) => {
-    const res = await axios.get(
-      `/api/v1/movie-test-project/movies?keyword=${keyword}&page=${page}`
-    );
-    return res.data;
-  }
-);
-
-export const movieByIdApi = createAsyncThunk("movies/movieById", async (id) => {
-  const res = await axios.get(`/api/v1/movie-test-project/movie_by_id/${id}`);
-  return res.data;
-});
-
-export const likeMovieApi = createAsyncThunk("movies/likeMovie", async (id) => {
-  const res = await axios.patch(`/api/v1/movie-test-project/like_movie/${id}`);
-  return res.data;
-});
 
 const moviesSlice = createSlice({
   name: "movies",
@@ -53,39 +37,39 @@ const moviesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMovieApi.pending, (state) => {
+      .addCase(getMoviesAction.pending, (state) => {
         state.loading = "pending";
       })
-      .addCase(fetchMovieApi.fulfilled, (state, action) => {
+      .addCase(getMoviesAction.fulfilled, (state, action) => {
         state.movieListNew = action.payload.movies;
         state.countTotalItems = action.payload.countTotalItems;
         state.totalPage = action.payload.totalPage;
         state.loading = "fulfilled";
       })
-      .addCase(fetchMovieApi.rejected, (state, action) => {
+      .addCase(getMoviesAction.rejected, (state, action) => {
         state.loading = "rejected";
         state.error = action.error;
       })
-      .addCase(likeMovieApi.pending, (state) => {
+      .addCase(getMovieLikedAction.pending, (state) => {
         state.loading = "pending/like";
       })
-      .addCase(likeMovieApi.fulfilled, (state, action) => {
+      .addCase(getMovieLikedAction.fulfilled, (state, action) => {
         state.loading = "fulfilled/like";
         state.message = action.payload.msg_vn;
         state.is_like = action.payload.is_like;
       })
-      .addCase(likeMovieApi.rejected, (state, action) => {
+      .addCase(getMovieLikedAction.rejected, (state, action) => {
         state.loading = "rejected/like";
         state.error = action.error;
       })
-      .addCase(movieByIdApi.pending, (state) => {
+      .addCase(getMovieByIdAction.pending, (state) => {
         state.loading = "pending";
       })
-      .addCase(movieByIdApi.fulfilled, (state, action) => {
+      .addCase(getMovieByIdAction.fulfilled, (state, action) => {
         state.loading = "fulfilled";
         state.movieById = action.payload.movie;
       })
-      .addCase(movieByIdApi.rejected, (state, action) => {
+      .addCase(getMovieByIdAction.rejected, (state, action) => {
         state.loading = "rejected";
         state.error = action.error;
       });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fetchMovieApi } from "../store/movies/moviesSlice";
+import { getMoviesAction } from "../store/actions/moviesAction";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +9,7 @@ const Search = () => {
   const [keyword, setKeyword] = useState("");
 
   const handleSearch = () => {
-    dispatch(fetchMovieApi({ keyword }));
+    dispatch(getMoviesAction({ keyword }));
     navigate(`/movies?keyword=${keyword}`);
   };
 

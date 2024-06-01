@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAlertAction } from "../store/alert/alertSlice";
+import { deleteAlertAction } from "../store/slices/alertSlice";
 
 const Alert = () => {
   const dispatch = useDispatch();

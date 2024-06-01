@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import Form from "../components/Form";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerAction, clearState } from "../store/users/authSlice";
-import { alertAction } from "../store/alert/alertSlice";
+import { registerAction } from "../store/actions/authAction";
 import { formRegisterValidate } from "../utils/formValidate";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { loading, success, message, type } = useSelector(
-    (state) => state.auth
-  );
+  const { isLoading } = useSelector((state) => state.auth.register);
   const navigate = useNavigate();
   const [validate, setValidate] = useState({});
 
@@ -32,6 +29,7 @@ const Register = () => {
 
     if (validate.success) {
       dispatch(registerAction(user));
+      navigate("/login");
     }
   };
 
@@ -45,19 +43,6 @@ const Register = () => {
     return () => {};
   }, [user]);
 
-  useEffect(() => {
-    if (success && type === "register") {
-      dispatch(
-        alertAction({
-          title: message,
-          color: "green",
-        })
-      );
-      dispatch(clearState());
-      navigate("/login");
-    }
-    return () => {};
-  }, [message, type, success, dispatch, navigate]);
   return (
     <React.Fragment>
       <div className="fixed top-0 z-[49] w-full h-[100vh] flex justify-center items-center bg-[#0007]">
@@ -133,10 +118,10 @@ const Register = () => {
               <div className="w-full flex flex-col items-center gap-2">
                 <button
                   type="submit"
-                  disabled={loading ? true : false}
+                  disabled={isLoading ? true : false}
                   className="rounded-full bg-primary py-2 font-bold w-[60%] text-md shadow-md duration-300 transition-all ease-in-out hover:bg-secondary hover:text-primary"
                 >
-                  {loading ? "Loading..." : "Đăng ký"}
+                  {isLoading ? "Loading..." : "Đăng ký"}
                 </button>
                 <span className="inline-flex gap-1 items-center">
                   <p className="text-sm text-secondary">Bạn đã có tài khoản?</p>

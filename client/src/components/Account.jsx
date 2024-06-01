@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import DropdownMenu from "./DropdownMenu";
 import { useDispatch } from "react-redux";
-import { logoutAction } from "../store/users/authSlice";
+import { logoutAction } from "../store/actions/authAction";
 
 const Account = ({ info }) => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const Account = ({ info }) => {
         name: "Thông tin cá nhân",
         key: "personal_infomation",
         icon: "fa-solid fa-circle-user",
+        link: "my-account-manager/personal-information",
         handle: () => {},
       },
       {
@@ -24,6 +25,7 @@ const Account = ({ info }) => {
         name: "Phim yêu thích",
         key: "movies_liked",
         icon: "fa-solid fa-heart",
+        link: "my-account-manager/movies-liked",
         handle: () => {},
       },
       {
@@ -31,6 +33,7 @@ const Account = ({ info }) => {
         name: "Danh sách phim",
         key: "watch_list",
         icon: "fa-solid fa-bookmark",
+        link: "my-account-manager/watch-list/nothing",
         handle: () => {},
       },
       {
@@ -38,6 +41,7 @@ const Account = ({ info }) => {
         name: "Lịch sử xem",
         key: "history",
         icon: "fa-solid fa-clock",
+        link: "my-account-manager/history",
         handle: () => {},
       },
       {
@@ -45,6 +49,7 @@ const Account = ({ info }) => {
         name: "Cài đặt",
         key: "settings",
         icon: "fa-solid fa-gear",
+        link: "my-account-manager/settings",
         handle: () => {},
       },
       {
@@ -52,6 +57,7 @@ const Account = ({ info }) => {
         name: "Đăng xuất",
         key: "log_out",
         icon: "fa-solid fa-right-from-bracket",
+        link: "",
         handle: () => handleLogout(dispatch),
       },
     ],
@@ -74,11 +80,11 @@ const Account = ({ info }) => {
             <span className="inline-flex items-center justify-center gap-1 bg-light text-secondary rounded-tr-md rounded-bl-md text-center px-1 w-full h-[15px]">
               <i
                 className={`fa-solid fa-circle text-[8px] ${
-                  info?.isActive ? "text-green" : "text-red"
+                  info?.is_active ? "text-green" : "text-red"
                 } `}
               ></i>
               <span className="text-xsm font-bold">
-                {info?.isActive ? "Hoạt động" : "Không hoạt động"}
+                {info?.is_active ? "Hoạt động" : "Không hoạt động"}
               </span>
             </span>
             <p className="tracking-wide font-bold text-smd text-primary text-center truncate w-full h-[20px]">

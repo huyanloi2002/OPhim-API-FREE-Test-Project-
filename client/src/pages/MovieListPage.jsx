@@ -4,11 +4,8 @@ import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import MovieCard from "../components/MovieCard";
 import { useSearchParams } from "react-router-dom";
-import {
-  fetchMovieApi,
-  imagePathAction,
-  paginationAction,
-} from "../store/movies/moviesSlice";
+import { imagePathAction, paginationAction } from "../store/slices/moviesSlice";
+import { getMoviesAction } from "../store/actions/moviesAction";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -26,7 +23,7 @@ const MovieList = () => {
   useEffect(() => {
     const page = pageParams || 1;
     const keyword = keywordParams || "";
-    dispatch(fetchMovieApi({ page, keyword }));
+    dispatch(getMoviesAction({ page, keyword }));
   }, [dispatch, pageParams, keywordParams]);
 
   useEffect(() => {

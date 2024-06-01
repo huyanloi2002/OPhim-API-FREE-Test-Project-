@@ -1,7 +1,26 @@
 const User = require("../models/userModel");
+const Login_History = require("../models/loginHistoryModel");
+
 const bcrypt = require("bcryptjs");
 
 const userController = {
+  getLoginHistory: async (req, res) => {
+    try {
+      const user_id = req.user.id;
+
+      const login_history = await Login_History.find({ user_id });
+
+      return res.status(200).json({
+        login_history,
+        success: true,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+      });
+    }
+  },
+
   checkUserFromClient: async (req, res) => {
     try {
       const { email, password, type } = req.body;

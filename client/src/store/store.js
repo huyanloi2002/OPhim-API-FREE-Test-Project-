@@ -1,7 +1,8 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import moviesReducer from "./movies/moviesSlice";
-import alertReducer from "./alert/alertSlice";
-import authReducer from "./users/authSlice";
+import moviesReducer from "./slices/moviesSlice";
+import alertReducer from "./slices/alertSlice";
+import authReducer from "./slices/authSlice";
+import userReducer from "./slices/userSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { getPersistConfig } from "redux-deep-persist";
@@ -11,12 +12,13 @@ const rootReducer = combineReducers({
   movies: moviesReducer,
   alert: alertReducer,
   auth: authReducer,
+  user: userReducer,
 });
 //Config redux persist:2
 const persistConfig = getPersistConfig({
   key: "root",
   storage,
-  blacklist: ["auth.access_token", "auth._id"], //Ẩn đi access_token sử dụng redux deep persist
+  blacklist: ["auth._id"], //Ẩn đi access_token sử dụng redux deep persist
   rootReducer,
 });
 //Config redux persist:3

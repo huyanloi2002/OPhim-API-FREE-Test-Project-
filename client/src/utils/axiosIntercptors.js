@@ -1,6 +1,6 @@
 import axios from "axios";
 import { store } from "../store/store";
-import { refreshTokenAction } from "../store/users/authSlice";
+import { refreshTokenAction } from "../store/slices/authSlice";
 
 const axiosJWT = axios.create({
   baseURL: "http://localhost:8000",
