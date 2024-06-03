@@ -21,16 +21,16 @@ const userSchema = new mongoose.Schema(
     avatar: {
       public_id: {
         type: String,
-        default: "0921fc87aa989330b8d403014bf4f340_bzfxa9",
+        default: "0921fc87aa989330b8d403014bf4f340_erz0au",
       },
       url: {
         type: String,
         default:
-          "https://res.cloudinary.com/buidoanquanghuy19112002/image/upload/v1717125407/movies_project/avatar/0921fc87aa989330b8d403014bf4f340_bzfxa9.jpg",
+          "https://res.cloudinary.com/buidoanquanghuy19112002/image/upload/v1717299531/movies_project/avatar/0921fc87aa989330b8d403014bf4f340_erz0au.jpg",
       },
       isChange: {
         type: Boolean,
-        default: true,
+        default: false,
       },
     },
     role: {

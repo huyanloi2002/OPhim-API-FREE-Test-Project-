@@ -1,9 +1,37 @@
 import React, { useState, useMemo } from "react";
+import {
+  sendMailAction,
+  verifyEmailAction,
+  verifyIdentifyAction,
+} from "../store/actions/userAction";
+import { useDispatch, useSelector } from "react-redux";
+import { alertAction } from "../store/slices/alertSlice";
 
-const SecurityLevel = ({ user }) => {
-  const { isVerify, identify } = user;
+const SecurityLevel = () => {
+  const dispatch = useDispatch();
   const [numberVerify, setNumberVerify] = useState("");
   const [numberIdentify, setNumberIdentify] = useState("");
+  const { details_user } = useSelector((state) => state.auth);
+  const isVerify = details_user?.isVerify;
+  const identify = details_user?.identify;
+
+  const [countDownResend, setCountDownResend] = useState(10);
+
+  const timerResend = () => {
+    const countDown = setInterval(() => {
+      setCountDownResend((prev) => {
+        if (prev === 0) {
+          clearInterval(countDown);
+          return prev;
+        } else {
+          return prev - 1;
+        }
+      });
+      return () => {
+        clearInterval(countDown);
+      };
+    }, [1000]);
+  };
 
   const calculateStrokeCircle = (isVerify, identify) => {
     let strokeDasharray = 370;
@@ -36,7 +64,7 @@ const SecurityLevel = ({ user }) => {
     const { value } = e.target;
 
     if (value.length <= 6) {
-      setNumberVerify(parseInt(value));
+      setNumberVerify(value);
     }
   };
 
@@ -44,9 +72,62 @@ const SecurityLevel = ({ user }) => {
     const { value } = e.target;
 
     if (value.length <= 12) {
-      setNumberIdentify(parseInt(value));
+      setNumberIdentify(value);
     }
   };
+
+  const access_token = localStorage.getItem("access_token");
+  const handleSendMail = () => {
+    dispatch(sendMailAction(`Bearer ${access_token}`)).then((result) => {
+      if (result.payload.success) {
+        dispatch(
+          alertAction({
+            title: result.payload.msg,
+            color: "green",
+          })
+        );
+        timerResend();
+      }
+    });
+  };
+
+  const handleVerifyEmail = () => {
+    dispatch(
+      verifyEmailAction({
+        otp: numberVerify,
+        token: `Bearer ${access_token}`,
+      })
+    ).then((result) => {
+      if (result.payload.success) {
+        dispatch(
+          alertAction({
+            title: result.payload.msg,
+            color: "green",
+          })
+        );
+      }
+    });
+  };
+
+  const handleVerifyIdentify = () => {
+    dispatch(
+      verifyIdentifyAction({
+        number_identify: numberIdentify,
+        token: `Bearer ${access_token}`,
+      })
+    ).then((result) => {
+      if (result.payload.success) {
+        dispatch(
+          alertAction({
+            title: result.payload.msg,
+            color: "green",
+          })
+        );
+      }
+    });
+  };
+
+  console.log(numberVerify);
 
   return (
     <React.Fragment>
@@ -85,12 +166,17 @@ const SecurityLevel = ({ user }) => {
             <div className="inline-flex gap-1 p-1">
               <input
                 type="email"
-                value={user?.email}
+                value={details_user?.email ? details_user?.email : ""}
                 className="border border-[#0003] rounded-sm text-sm14 px-2 py-1 outline-none w-[200px]"
                 disabled={true}
               />
-              <button className="text-sm px-2 rounded-sm bg-red font-bold text-light">
-                Lấy mã
+              <button
+                className="text-sm px-2 rounded-sm bg-red font-bold text-light"
+                onClick={() => handleSendMail()}
+              >
+                {countDownResend === 0 || countDownResend === 10
+                  ? "Lấy mã"
+                  : `${countDownResend}`}
               </button>
             </div>
             <div className="inline-flex justify-end items-center gap-1 p-1 relative">
@@ -101,7 +187,10 @@ const SecurityLevel = ({ user }) => {
                 value={numberVerify}
                 placeholder="Nhập mã..."
               />
-              <button className="text-sm px-2 bg-green-dark rounded-sm text-light font-bold absolute py-1 mr-[0.10rem]">
+              <button
+                className="text-sm px-2 bg-green-dark rounded-sm text-light font-bold absolute py-1 mr-[0.10rem]"
+                onClick={() => handleVerifyEmail()}
+              >
                 Xác thực
               </button>
             </div>
@@ -122,7 +211,10 @@ const SecurityLevel = ({ user }) => {
                 value={numberIdentify}
                 placeholder="Nhập mã..."
               />
-              <button className="text-sm px-2 bg-green-dark rounded-sm text-light font-bold absolute py-1 mr-[0.10rem]">
+              <button
+                className="text-sm px-2 bg-green-dark rounded-sm text-light font-bold absolute py-1 mr-[0.10rem]"
+                onClick={() => handleVerifyIdentify()}
+              >
                 Xác thực
               </button>
             </div>

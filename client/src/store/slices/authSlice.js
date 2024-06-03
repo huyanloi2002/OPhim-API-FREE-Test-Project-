@@ -4,12 +4,12 @@ import {
   registerAction,
   refreshTokenAction,
   logoutAction,
+  getUserCurrentAction,
 } from "../actions/authAction";
 
 const initialState = {
-  isLogin: false,
   access_token: null,
-  user: null,
+  details_user: null,
   login: {
     isLoading: false,
     user: null,
@@ -34,6 +34,11 @@ const initialState = {
     message: null,
     isSuccess: false,
   },
+  getUser: {
+    isLoading: false,
+    message: null,
+    isSuccess: false,
+  },
 };
 
 const authSlice = createSlice({
@@ -46,11 +51,10 @@ const authSlice = createSlice({
         state.login.isSuccess = false;
       })
       .addCase(loginAction.fulfilled, (state, action) => {
-        state.isLogin = true;
         state.login.isLoading = false;
-        state.user = action.payload.user;
         state.access_token = action.payload.access_token;
         state.login.message = action.payload.msg_vn;
+        state.details_user = action.payload.user;
         state.login.isSuccess = action.payload.success;
       })
       .addCase(loginAction.rejected, (state, action) => {
@@ -78,8 +82,6 @@ const authSlice = createSlice({
       })
       .addCase(refreshTokenAction.fulfilled, (state, action) => {
         state.refresh_token.isLoading = false;
-        state.isLogin = true;
-        state.user = action.payload.user;
         state.access_token = action.payload.access_token;
         state.refresh_token.message = action.payload.msg_vn;
         state.refresh_token.isSuccess = action.payload.success;
@@ -94,18 +96,30 @@ const authSlice = createSlice({
         state.logout.isSuccess = false;
       })
       .addCase(logoutAction.fulfilled, (state, action) => {
-        state.isLogin = false;
         state.logout.isLoading = false;
         state.logout.isSuccess = true;
         state.logout.message = action.payload.msg_vn;
-        state.user = null;
         state.access_token = null;
-        state.login = {};
-        state.refresh_token = {};
       })
       .addCase(logoutAction.rejected, (state) => {
         state.logout.isLoading = false;
         state.logout.isSuccess = false;
+      })
+      .addCase(getUserCurrentAction.pending, (state) => {
+        state.getUser.isLoading = true;
+        state.getUser.isSuccess = false;
+        state.message = null;
+      })
+      .addCase(getUserCurrentAction.fulfilled, (state, action) => {
+        state.getUser.isLoading = false;
+        state.getUser.isSuccess = true;
+        state.getUser.message = action.payload.msg;
+        state.details_user = action.payload.user;
+      })
+      .addCase(getUserCurrentAction.rejected, (state, action) => {
+        state.getUser.isLoading = false;
+        state.getUser.isSuccess = false;
+        state.getUser.message = action.payload.msg;
       });
   },
 });

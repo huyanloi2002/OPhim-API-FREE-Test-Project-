@@ -1,9 +1,12 @@
 const User = require("../models/userModel");
+const UserOTPVerifyEmail = require("../models/userOTPVerifyEmailModel");
+
 const Login_History = require("../models/loginHistoryModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validateEmail } = require("../utils/valueValidate");
 const requestClientIP = require("../utils/requestClientIP");
+const sendOTPMail = require("../utils/sendOTPMail");
 
 let salt = bcrypt.genSaltSync(10);
 
@@ -246,6 +249,40 @@ const authController = {
     } catch (err) {
       return res.status(500).json({
         msg: err.message,
+      });
+    }
+  },
+  sendOTPEmail: async (req, res) => {
+    try {
+      const user_id = req.user.id;
+
+      const user = await User.findOne({ _id: user_id });
+
+      if (!user.email) {
+        return res.status(400).json({
+          msg: "Empty user details are not allowed",
+          success: false,
+        });
+      } else {
+        await UserOTPVerifyEmail.deleteMany({ user_id: user._id });
+        sendOTPMail(
+          {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+          },
+          res
+        );
+
+        return res.status(200).json({
+          msg: "Email has been resend successfully, please check mail.",
+          success: true,
+        });
+      }
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+        success: false,
       });
     }
   },

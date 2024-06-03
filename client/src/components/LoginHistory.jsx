@@ -1,7 +1,10 @@
 import React from "react";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
-const LoginHistory = ({ data }) => {
+const LoginHistory = () => {
+  const { details_user } = useSelector((state) => state.auth);
+
   const devicesData = [
     { id: 1, icon: "fa-solid fa-laptop", key: "Windows" },
     { id: 2, icon: "fa-solid fa-laptop", key: "macOS" },
@@ -18,8 +21,8 @@ const LoginHistory = ({ data }) => {
         <p className="text-md uppercase font-bold">Lịch sử đăng nhập</p>
       </div>
       <div className="h-[285px] w-full flex flex-col overflow-y-scroll">
-        {data &&
-          data.map((item, index) => (
+        {details_user?.login_history &&
+          details_user?.login_history.map((item, index) => (
             <div
               key={index}
               className={`flex justify-between pr-4 py-2 border-2 border-t border-[#0002] first:border-t-0 last:border-b-0 border-x-0 cursor-default odd:bg-white even:bg-slate-50`}

@@ -2,8 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const verifyToken = async (req, res, next) => {
   try {
-    const token = req.headers["authorization"];
-    // .split(" ")[1];
+    const token = req.headers["authorization"].split(" ")[1];
     if (!token) {
       return res.status(400).json({
         msg: "Token is required!",
@@ -24,6 +23,7 @@ const verifyToken = async (req, res, next) => {
           success: false,
         });
       }
+
       req.user = result;
 
       next();

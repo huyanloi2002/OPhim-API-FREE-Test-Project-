@@ -72,7 +72,7 @@ const Account = ({ info }) => {
             <img
               src={info?.avatar?.url}
               alt=""
-              className="bg-light rounded-full w-[40px] aspect-square border-2 border-light cursor-pointer"
+              className="bg-light rounded-full w-[40px] aspect-square border-2 border-light cursor-pointer object-cover"
               title={`Xin chào, ${info?.email}`}
             />
           </DropdownMenu>

@@ -85,6 +85,8 @@ export default {
         opacityTrailer: "opacity 4s ease-in-out",
         alert: "alert 0.5s ease-in-out",
         "spin-border": "spin-border 1s ease-in-out",
+        "show-edit": "show-edit 1s ease-in-out",
+        "show-input": "show-input 1s ease-in-out",
       },
       keyframes: {
         opacity: {
@@ -102,6 +104,14 @@ export default {
         "spin-border": {
           "0%": { strokeDashoffset: 0, stroke: "#1abc9c" },
           "100%": { strokeDashoffset: -380, stroke: "#1abc9c" },
+        },
+        "show-edit": {
+          "0%": { width: "0px", fontSize: "0px" },
+          "100%": { width: "120px", fontSize: "13px" },
+        },
+        "show-input": {
+          "0%": { width: "10px", fontSize: "14px" },
+          "100%": { width: "200px", fontSize: "14px" },
         },
       },
     },

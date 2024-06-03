@@ -3,8 +3,11 @@ import Search from "./Search";
 import { Link } from "react-router-dom";
 import Account from "../components/Account";
 import ButtonAuth from "../components/ButtonAuth";
+import { useSelector } from "react-redux";
 
-const Navbar = ({ account, isLogin }) => {
+const Navbar = () => {
+  const isLogin = localStorage.getItem("isLogin");
+  const { details_user } = useSelector((state) => state.auth);
   const navMenu = [
     { id: 1, name: "Home", name_vn: "Trang chủ", key: "home" },
     { id: 2, name: "Catgory", name_vn: "Thể loại", key: "category" },
@@ -36,7 +39,7 @@ const Navbar = ({ account, isLogin }) => {
           ))}
         </ul>
         <div className="w-[180px]">
-          {!isLogin ? <ButtonAuth /> : <Account info={account} />}
+          {!isLogin ? <ButtonAuth /> : <Account info={details_user} />}
         </div>
       </div>
     </React.Fragment>

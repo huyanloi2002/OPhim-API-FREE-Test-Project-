@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./styles/App.css";
 import Navbar from "./components/Navbar";
@@ -16,14 +16,20 @@ import NotFoundPage from "./pages/NotFoundPage";
 import PrivateRoute from "./pages/PrivateRoute";
 import HomePage from "./pages/HomePage";
 import Alert from "./components/Alert";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getUserCurrentAction } from "./store/actions/authAction";
 
 const App = () => {
-  const { isLogin, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const isLogin = localStorage.getItem("isLogin");
+
+  useEffect(() => {
+    dispatch(getUserCurrentAction());
+  }, [dispatch]);
 
   return (
     <React.Fragment>
-      <Navbar account={user} isLogin={isLogin} />
+      <Navbar />
       <Alert />
       <Routes>
         <Route element={<PrivateRoute />}>
