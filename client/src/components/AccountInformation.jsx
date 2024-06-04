@@ -12,8 +12,6 @@ const AccountInformation = () => {
   const { isLoading, message } = useSelector((state) => state.user.updateUser);
   const access_token = localStorage.getItem("access_token");
 
-  console.log(message);
-
   const [isShowEdit, setIsShowEdit] = useState(false);
   const editState = { username: details_user?.username };
   const [editData, setEditData] = useState(editState);

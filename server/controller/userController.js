@@ -7,7 +7,7 @@ const cityCodeIdentify = require("../data/cityCodeIdentify.json");
 const bcrypt = require("bcryptjs");
 
 const userController = {
-  getUserById: async (req, res) => {
+  getCurrentUser: async (req, res) => {
     try {
       const user_id = req.user.id;
 
@@ -16,6 +16,7 @@ const userController = {
       if (!user) {
         return res.status(400).json({
           msg: "Token is not valid or user not found!",
+          msg_vn: "Tài khoản không tồn tại!",
           success: false,
         });
       }
@@ -44,6 +45,7 @@ const userController = {
       if (req.body.email) {
         return res.status(400).json({
           msg: "Email cann't be changed!",
+          msg_vn: "Email không thể thay đổi, vì lý do bảo mật!",
           success: false,
         });
       }
@@ -95,6 +97,7 @@ const userController = {
         updateUser,
         success: true,
         msg: "Updated succeed!",
+        msg_vn: "Cập nhật thành công!",
       });
     } catch (err) {
       return res.status(500).json({
@@ -152,12 +155,14 @@ const userController = {
         if (!number_identify) {
           return res.status(400).json({
             msg: "Please enter your identify number!",
+            msg_vn: "Vui lòng nhập mã định danh của bạn!",
             success: false,
           });
         }
         if (number_identify.length !== 12) {
           return res.status(400).json({
             msg: "Incorrect identifier 12 characters!",
+            msg_vn: "Mã định danh không đủ 12 ký tự!",
             success: false,
           });
         }
@@ -166,6 +171,7 @@ const userController = {
         if (!cityCodeIdentify.includes(city_code)) {
           return res.status(400).json({
             msg: "Identify number is incorrect format: city",
+            msg_vn: "Mã định danh không đúng định dạng!: 3 số đầu",
             success: false,
           });
         }
@@ -175,6 +181,7 @@ const userController = {
         if (!genders.includes(gender_udentify)) {
           return res.status(400).json({
             msg: "Identify number is incorrect format: gender",
+            msg_vn: "Mã định danh không đúng định dạng!: số thứ 4",
             success: false,
           });
         }
@@ -199,6 +206,7 @@ const userController = {
 
         return res.status(500).json({
           msg: "Identifier authentication successful!",
+          msg_vn: "Xác thực mã định danh thành công!",
           success: true,
           updateIdentify,
         });
@@ -220,6 +228,7 @@ const userController = {
       if (!user) {
         return res.status(400).json({
           msg: "Empty user details are not allowed",
+          msg_vn: "Tài khoản này không tồn tại!",
           success: false,
         });
       }
@@ -227,16 +236,19 @@ const userController = {
       if (!otp || otp.length !== 6) {
         return res.status(400).json({
           msg: "OTP is incorrect format!",
+          msg_vn: "Mã OTP không đúng định dạng. Vui lòng nhập đủ 6 số OTP!",
+          success: false,
         });
       }
+
       const user_otp = await UserOTPVerifyEmail.find({ user_id: user._id });
 
       const oldOTP = user_otp[0].otp;
       const oldOTPExpiredAt = user_otp[0].expiredAt;
-
-      if (oldOTP !== otp) {
+      if (otp !== oldOTP) {
         return res.status(400).json({
           msg: "OTP code is incorrect with OTP code in email. Please check email again!",
+          msg_vn: "Mã OTP không đúng. Vui lòng kiểm tra lại mã OTP ở Email!",
           success: false,
         });
       }
@@ -244,6 +256,7 @@ const userController = {
       if (oldOTPExpiredAt.getTime() < new Date().getTime()) {
         return res.status(400).json({
           msg: "OTP code is expired! Please resend OTP code again is verify!",
+          msg_vn: "Mã OTP đã hết hạn. Vui lòng gửi lại mã OTP để xác thực!",
           success: false,
         });
       }
@@ -256,6 +269,7 @@ const userController = {
 
       return res.status(200).json({
         msg: "Verify email is successfully!",
+        msg_vn: "Xác thực email thành công!",
         success: true,
         updateVerifyEmail,
       });

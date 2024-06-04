@@ -261,6 +261,7 @@ const authController = {
       if (!user.email) {
         return res.status(400).json({
           msg: "Empty user details are not allowed",
+          msg_vn: "Tài khoản không tồn tại!",
           success: false,
         });
       } else {
@@ -275,7 +276,8 @@ const authController = {
         );
 
         return res.status(200).json({
-          msg: "Email has been resend successfully, please check mail.",
+          msg: "OTP has been resend successfully, please check mail!",
+          msg_vn: "OTP đã được gửi tới email, Vui lòng kiểm tra và xác thực",
           success: true,
         });
       }

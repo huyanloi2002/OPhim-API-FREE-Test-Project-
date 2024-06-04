@@ -11,7 +11,7 @@ const supportSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    phone: {
+    phone_number: {
       type: String,
     },
     description: {
@@ -24,6 +24,11 @@ const supportSchema = new mongoose.Schema(
       type: String,
       enum: ["Unconfirmed", "Confirmed", "Resolved"],
       default: "Unconfirmed",
+    },
+    message_of_admin: {
+      type: String,
+      default:
+        "Cảm ơn bạn đã gửi phiếu hỗ trợ, chúng tôi sẽ giải quyết cho bạn trong thời gian ngắn nhất!",
     },
   },
   {

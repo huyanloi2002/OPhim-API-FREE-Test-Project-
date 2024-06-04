@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  getUserById,
+  getCurrentUser,
   updateUser,
   getAllUser,
   deleteUser,
@@ -14,7 +14,7 @@ const {
 
 const { verifyToken } = require("../middleware/verifyToken");
 
-router.get("/user", verifyToken, getUserById);
+router.get("/user", verifyToken, getCurrentUser);
 router.get("/users", verifyToken, getAllUser);
 router.patch("/update_user", verifyToken, updateUser);
 router.delete("/delete_user", verifyToken, deleteUser);
