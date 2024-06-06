@@ -220,5 +220,42 @@ const movieController = {
     }
   },
 };
+addDetailsMovies: async (req, res) => {
+    try {
+      const movies = await Movie.find({}, { _id: 0, slug: 1 })
+        .limit(31)
+        .skip(19969)
+        .sort({ modified: -1 });
+
+      let moviesDetais = [];
+      for (let i = 0; i < 1000; i++) {
+        const res = await axios.get(
+          `https://ophim1.com/phim/${movies[i].slug}`
+        );
+
+        const result = res.data.movie;
+
+        const newDetails = {
+          ...result,
+          movie_id: result._id,
+        };
+
+        moviesDetais.push(newDetails);
+      }
+
+      const addDetailsMovie = await Details_Movie.insertMany(moviesDetais);
+      if (addDetailsMovie) {
+        res.json("Insert Success");
+      } else {
+        res.json("Insert Fail");
+      }
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+        success: false,
+      });
+    }
+  },
+
 
 module.exports = movieController;
