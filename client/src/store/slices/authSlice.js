@@ -12,8 +12,6 @@ const initialState = {
   details_user: null,
   login: {
     isLoading: false,
-    user: null,
-    access_token: null,
     message: null,
     isSuccess: false,
   },
@@ -52,9 +50,7 @@ const authSlice = createSlice({
       })
       .addCase(loginAction.fulfilled, (state, action) => {
         state.login.isLoading = false;
-        state.access_token = action.payload.access_token;
         state.login.message = action.payload.msg_vn;
-        state.details_user = action.payload.user;
         state.login.isSuccess = action.payload.success;
       })
       .addCase(loginAction.rejected, (state, action) => {
@@ -100,6 +96,7 @@ const authSlice = createSlice({
         state.logout.isSuccess = true;
         state.logout.message = action.payload.msg_vn;
         state.access_token = null;
+        state.details_user = null;
       })
       .addCase(logoutAction.rejected, (state) => {
         state.logout.isLoading = false;

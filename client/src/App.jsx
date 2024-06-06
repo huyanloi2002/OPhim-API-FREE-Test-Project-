@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./styles/App.css";
 import Navbar from "./components/Navbar";
@@ -21,7 +21,13 @@ import { getUserCurrentAction } from "./store/actions/authAction";
 
 const App = () => {
   const dispatch = useDispatch();
-  const isLogin = localStorage.getItem("isLogin");
+  const [isLogin, setIsLogin] = useState(null);
+
+  useEffect(() => {
+    const isLogin = localStorage.getItem("isLogin");
+    console.log(isLogin);
+    setIsLogin(isLogin);
+  }, []);
 
   useEffect(() => {
     dispatch(getUserCurrentAction());
@@ -38,23 +44,21 @@ const App = () => {
               path="personal-information"
               element={<PersonalInformation />}
             />
-            <Route path="movies-liked" element={<MoviesLikedPage />} />
-            <Route path="watch-list/:slug" element={<WatchListPage />} />
-            <Route path="history" element={<HistoryPage />} />
-            <Route path="settings" element={<SettingsPage />} />
+            <Route exact path="movies-liked" element={<MoviesLikedPage />} />
+            <Route exact path="watch-list/:slug" element={<WatchListPage />} />
+            <Route exact path="history" element={<HistoryPage />} />
+            <Route exact path="settings" element={<SettingsPage />} />
           </Route>
         </Route>
         <Route
-          exact
           path="/login"
           element={!isLogin ? <LoginPage /> : <HomePage />}
         />
         <Route
-          exact
           path="/register"
           element={!isLogin ? <RegisterPage /> : <HomePage />}
         />
-        <Route exact path="/" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/movies" element={<MovieListPage />} />
         <Route path="/movie-details/:slug" element={<MovieDetailsPage />} />
         <Route path="*" element={<NotFoundPage />} />

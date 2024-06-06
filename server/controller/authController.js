@@ -148,14 +148,14 @@ const authController = {
 
     //Lưu IP sau mỗi khi phiên đăng nhập
     const requestIP = requestClientIP(req);
-    const login_history = new Login_History({
+    const loginHistory = new Login_History({
       user_id: user._id,
       ip: requestIP.clientIp,
       device: requestIP.device,
       browser: requestIP.browser,
       login_time: new Date(),
     });
-    await login_history.save();
+    await loginHistory.save();
 
     const access_token = createAccessToken({ id: user.id });
     const refresh_token = createRefreshToken({ id: user.id });

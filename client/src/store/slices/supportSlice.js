@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createSupportAction } from "../actions/supportAction";
+import {
+  createSupportAction,
+  getMySupportAction,
+} from "../actions/supportAction";
 
 const initialState = {
   isLoading: false,
-  support: null,
+  my_support: null,
   error: null,
   message: null,
 };
@@ -25,6 +28,17 @@ const supportSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload.msg_vn;
         state.message = null;
+      })
+      .addCase(getMySupportAction.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMySupportAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.my_support = action.payload.support;
+      })
+      .addCase(getMySupportAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload.msg_vn;
       });
   },
 });

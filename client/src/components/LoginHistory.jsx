@@ -14,6 +14,7 @@ const LoginHistory = () => {
     { id: 6, icon: "fa-brands fa-chrome", key: "Chrome OS" },
     { id: 7, icon: "fa-regular fa-circle-question", key: "Unknown" },
   ];
+
   return (
     <React.Fragment>
       <div className="py-2 px-3 flex flex-col">

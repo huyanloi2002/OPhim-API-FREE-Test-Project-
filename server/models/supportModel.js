@@ -7,6 +7,11 @@ const supportSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    title: {
+      type: String,
+      maxLength: 100,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -19,7 +24,7 @@ const supportSchema = new mongoose.Schema(
       maxLength: 2000,
       required: true,
     },
-    images: [{ public_id: String, url: String }],
+    images: { type: Array },
     status: {
       type: String,
       enum: ["Unconfirmed", "Confirmed", "Resolved"],

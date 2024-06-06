@@ -8,11 +8,11 @@ import {
 const initialState = {
   error: null,
   type: null,
-  getUser: {
-    isLoading: false,
-    isSuccess: false,
-    message: null,
-  },
+  // getUser: {
+  //   isLoading: false,
+  //   isSuccess: false,
+  //   message: null,
+  // },
   updateUser: {
     isLoading: false,
     isSuccess: false,

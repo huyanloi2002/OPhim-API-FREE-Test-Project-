@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 import Form from "../components/Form";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAction } from "../store/actions/authAction";
+import { loginAction, getUserCurrentAction } from "../store/actions/authAction";
+
 import { formLoginValidate } from "../utils/formValidate";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.auth.login);
   const [validate, setValidate] = useState({});
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location?.state?.from?.pathname ?? "/";
+  console.log(location?.state?.from?.pathname);
 
   const userState = {
     email: "",
@@ -27,19 +31,22 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (validate.success) {
-      dispatch(loginAction(user));
-      navigate("/");
-    }
+    dispatch(loginAction(user)).then((result) => {
+      if (result.payload.success) {
+        navigate(pathname);
+        dispatch(getUserCurrentAction());
+      }
+    });
   };
 
   useEffect(() => {
-    const loginValidate = async () => {
-      const result = await formLoginValidate({ ...user });
-      setValidate(result);
-    };
-    loginValidate();
-
+    if (user) {
+      const loginValidate = async () => {
+        const result = await formLoginValidate({ ...user });
+        setValidate(result);
+      };
+      loginValidate();
+    }
     return () => {};
   }, [user]);
 

@@ -2,12 +2,20 @@ import React, { useMemo } from "react";
 import DropdownMenu from "./DropdownMenu";
 import { useDispatch } from "react-redux";
 import { logoutAction } from "../store/actions/authAction";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Account = ({ info }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location?.pathname;
 
-  const handleLogout = (dispatch) => {
-    dispatch(logoutAction());
+  const handleLogout = (dispatch, navigate, pathname) => {
+    dispatch(logoutAction()).then((result) => {
+      if (result.payload.success) {
+        navigate(pathname);
+      }
+    });
   };
 
   const accountMenu = useMemo(
@@ -58,10 +66,10 @@ const Account = ({ info }) => {
         key: "log_out",
         icon: "fa-solid fa-right-from-bracket",
         link: "",
-        handle: () => handleLogout(dispatch),
+        handle: () => handleLogout(dispatch, navigate, pathname),
       },
     ],
-    [dispatch]
+    [dispatch, navigate, pathname]
   );
 
   return (

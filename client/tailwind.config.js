@@ -87,6 +87,7 @@ export default {
         "spin-border": "spin-border 1s ease-in-out",
         "show-edit": "show-edit 1s ease-in-out",
         "show-input": "show-input 1s ease-in-out",
+        dropdown: "dropdown 1s ease-in-out",
       },
       keyframes: {
         opacity: {
@@ -112,6 +113,10 @@ export default {
         "show-input": {
           "0%": { width: "10px", fontSize: "14px" },
           "100%": { width: "200px", fontSize: "14px" },
+        },
+        dropdown: {
+          "0%": { height: "0px" },
+          "100%": { height: "300px" },
         },
       },
     },

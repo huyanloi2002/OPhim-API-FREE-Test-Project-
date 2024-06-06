@@ -5,7 +5,7 @@ const DropdownMenu = ({ data, children }) => {
   const [isShow, setIsShow] = useState(false);
 
   useEffect(() => {
-    const buttonDropDown = document.querySelector(".button-dropdown");
+    const buttonDropDownMenu = document.querySelector(".button-dropdown-menu");
 
     const handleMouseOver = () => {
       setIsShow(true);
@@ -15,18 +15,18 @@ const DropdownMenu = ({ data, children }) => {
       setIsShow(false);
     };
 
-    buttonDropDown.addEventListener("mouseover", handleMouseOver);
-    buttonDropDown.addEventListener("mouseout", handleMouseOut);
+    buttonDropDownMenu.addEventListener("mouseover", handleMouseOver);
+    buttonDropDownMenu.addEventListener("mouseout", handleMouseOut);
 
     return () => {
-      buttonDropDown.removeEventListener("mouseover", handleMouseOver);
-      buttonDropDown.removeEventListener("mouseout", handleMouseOut);
+      buttonDropDownMenu.removeEventListener("mouseover", handleMouseOver);
+      buttonDropDownMenu.removeEventListener("mouseout", handleMouseOut);
     };
   }, []);
 
   return (
     <React.Fragment>
-      <div className="button-dropdown relative">
+      <div className="button-dropdown-menu relative">
         <button>{children}</button>
         {isShow && (
           <>

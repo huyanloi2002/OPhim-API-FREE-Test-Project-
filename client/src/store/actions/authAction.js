@@ -35,7 +35,6 @@ export const refreshTokenAction = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await postDataAPI("/refresh_token");
-
       return res.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -50,7 +49,6 @@ export const logoutAction = createAsyncThunk(
       const res = await postDataAPI("/logout");
       localStorage.removeItem("isLogin");
       localStorage.removeItem("access_token");
-
       return res.data;
     } catch (err) {
       // Return custom error message
@@ -64,7 +62,6 @@ export const getUserCurrentAction = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("access_token");
-
       const res = await getDataAPI("/user", `Bearer ${token}`);
       return res.data;
     } catch (err) {

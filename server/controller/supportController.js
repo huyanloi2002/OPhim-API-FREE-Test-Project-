@@ -1,6 +1,7 @@
 const Support = require("../models/supportModel");
 const User = require("../models/userModel");
 const { validatePhone } = require("../utils/valueValidate");
+const cloudinary = require("cloudinary").v2;
 
 const supportController = {
   createSupport: async (req, res) => {
@@ -8,6 +9,23 @@ const supportController = {
       const user_id = req.user.id;
 
       const { title, phone_number, description, images } = req.body;
+
+      let imagesLink = [];
+
+      if (images && images.length > 0) {
+        for (let i = 0; i < images.length; i++) {
+          const result = await cloudinary.uploader.upload(images[i].url, {
+            folder: "movies_project/supports",
+            width: 360,
+            crop: "scale",
+          });
+
+          imagesLink.push({
+            public_id: result.public_id,
+            url: result.secure_url,
+          });
+        }
+      }
 
       const user = await User.findById({ _id: user_id });
 
@@ -58,6 +76,7 @@ const supportController = {
         title,
         phone_number,
         description,
+        images: imagesLink,
       });
 
       await newSupport.save();
@@ -76,6 +95,14 @@ const supportController = {
   },
   getMySupport: async (req, res) => {
     try {
+      const user_id = req.user.id;
+
+      const support = await Support.find({ user_id: user_id });
+
+      return res.status(200).json({
+        support,
+        success: true,
+      });
     } catch (err) {
       return res.status(500).json({
         msg: err.message,
