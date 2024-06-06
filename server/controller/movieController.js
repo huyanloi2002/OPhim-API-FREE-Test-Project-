@@ -218,6 +218,6 @@ const movieController = {
       })
     }
   }
-};
+
 
 module.exports = movieController;
