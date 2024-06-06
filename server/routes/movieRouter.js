@@ -7,6 +7,7 @@ const {
   likeMovie,
   getMovieById,
   getMoviesLiked,
+  addDetailsMovies
 } = require("../controller/movieController");
 
 router.get("/movie", addMovie);
