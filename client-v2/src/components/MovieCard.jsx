@@ -80,37 +80,7 @@ export const MovieCardHorizontal = () => {
   );
 };
 
-export const MovieCardVertical = () => {
-  return (
-    <React.Fragment>
-      <div className="w-[140px] h-[180px] rounded-lg relative cursor-pointer shadow-md group/card overflow-hidden">
-        <img src="https://resizing.flixster.com/OBCMbeYEWS5tI2QhErFskxKyEa0=/206x305/v2/https://resizing.flixster.com/mPJp85eApHd8ih9XF5E9d3-2LbM=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzUxODlkZDE1LTQyYjUtNDg5ZS05NjZmLWMxZDk1YWZhN2E1ZC5qcGc="
-          alt="poster_url"
-          className="w-full h-full object-cover rounded-lg group-hover/card:scale-110 duration-500 transition-all ease-in-out"
-        />
-        <div className="h-[25%] w-full absolute bottom-0 rounded-b-lg bg-opacity-dark-0.8 flex justify-center items-center py-2 px-3 z-10">
-          <p className="text-xmd w-full font-bold line-clamp-2 text-center">Deadpool & Wolverines</p>
-        </div>
-        <div className="h-full w-full z-9 bg-opacity-dark-0.1 rounded-lg absolute top-0 group-hover/card:bg-opacity-dark-0.5 duration-500 transition-all ease-in-out ">
-        </div>
-        <div className="text-sm font-b900 flex flex-col items-start absolute top-2 left-0  gap-1 uppercase tracking-wider ">
-          <p className="bg-green-dark  px-2 rounded-r-md shadow-md">FHD</p>
-          <p className="bg-red-dark  px-2 rounded-r-md shadow-md">Vietsub</p>
-          <p className="bg-[orange]  px-2 rounded-r-md shadow-md">Full</p>
 
-        </div>
-        <div className="absolute top-0 right-2 opacity-0 pointer-events-none group-hover/card:opacity-100 group-hover/card:pointer-events-auto duration-500 transition-all ease-in-out hover:text-primary text-light z-50">
-          <i className="fa-solid fa-bookmark text-xl drop-shadow-lg "></i>
-        </div>
-        <div className="h-full w-full z-11 rounded-lg absolute top-0 flex opacity-0 pointer-events-none items-center duration-500 transition-all ease-in-out group-hover/card:opacity-100 group-hover/card:pointer-events-auto">
-          <div className="h-[35px] w-[35px] bg-dark mx-auto rounded-full flex justify-center items-center">
-            <FaPlay className="text-md" />
-          </div>
-        </div>
-      </div>
-    </React.Fragment>
-  );
-};
 
 export const MovieCardRecentt = () => {
   return (
