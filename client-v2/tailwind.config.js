@@ -9,10 +9,13 @@ export default {
         dark: "#08010f",
         light: "#ffffff",
         "green-dark": "#1abc9c",
+        "yellow-dark": "#ffcf07",
         "green-darker": "#16a085",
         "red-dark": "#ff5050",
         "gray-dark": "#636262",
+        "opacity-dark-0.1": "rgba(0, 0, 0, 0.1)",
         "opacity-dark-0.5": "rgba(0, 0, 0, 0.5)",
+        "opacity-dark-0.8": "rgba(0, 0, 0, 0.8)",
         "opacity-gray-0.7": "rgba(128, 128, 128, 0.7)",
         "opacity-white-0.1": "rgba(255, 255, 255, 0.1)",
         "opacity-white-0.2": "rgba(255, 255, 255, 0.2)",
@@ -31,6 +34,8 @@ export default {
         dark: "#08010f",
         "opacity-white-0.6": "rgba(255, 255, 255, 0.6)",
         "opacity-white-0.8": "rgba(255, 255, 255, 0.8)",
+        "yellow-dark": "#ffcf07",
+
       },
       borderColor: {
         dark: "#08010f",
