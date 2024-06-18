@@ -20,39 +20,38 @@ const type = [
 ];
 
 const MovieInfo = () => {
-  const { movieDetails, statusMovieDetails } = useSelector(
-    (state) => state.movies
+  const { detailsMovie, isLoading } = useSelector(
+    (state) => state.movies.getDetailsMovie
   );
 
   const moreDescriptionRef = useRef(true);
 
-  const { movie } = movieDetails;
   return (
     <React.Fragment>
       <div
         className={`text-dark relative w-full animate-[opacity_2s_ease-in-out] ${
-          statusMovieDetails ? "h-[47vh]" : "h-full"
+          !isLoading ? "h-[47vh]" : "h-full"
         } z-20 flex justify-center bg-secondary`}
       >
         <div className="w-[60%] h-full absolute top-[-100px] rounded-t-xl bg-secondary shadow-md text-light p-3">
-          {statusMovieDetails ? (
+          {!isLoading ? (
             <div className="w-full h-auto grid grid-cols-6  gap-5 p-2 justify-center items-start">
               <div className="col-span-2">
                 <MovieDetailsThumb
-                  thumb={movie?.thumb_url}
-                  name={movie?.name}
+                  thumb={detailsMovie?.thumb_url}
+                  name={detailsMovie?.name}
                 />
               </div>
               <div className="col-span-4 flex flex-col gap-2 w-full">
                 <div className="flex flex-col items-start justify-center w-full">
-                  <p className="text-xml font-mdbold w-[80%] truncate">{`${movie?.name} (${movie?.year})`}</p>
-                  <p className="text-lg font-thin w-[80%] truncate">{`(${movie?.origin_name} - ${movie?.year})`}</p>
+                  <p className="text-xml font-mdbold w-[80%] truncate">{`${detailsMovie?.name} (${detailsMovie?.year})`}</p>
+                  <p className="text-lg font-thin w-[80%] truncate">{`(${detailsMovie?.origin_name} - ${detailsMovie?.year})`}</p>
                 </div>
                 <div className="w-full flex flex-col gap-2">
                   <div className="flex justify-center absolute top-0 right-0 bg-primary rounded-tr-xl rounded-bl-xl cursor-default h-[50px] w-[120px] shadow-2xl shadow-primary">
                     {type.map(
                       (item, index) =>
-                        item.value === movie?.type && (
+                        item.value === detailsMovie?.type && (
                           <span
                             key={index}
                             className="rounded-full px-3 py-1 inline-flex items-center gap-2"
@@ -68,7 +67,7 @@ const MovieInfo = () => {
                     <div className="flex justify-between items-center cursor-default">
                       {status.map(
                         (item, index) =>
-                          item.value === movie?.status && (
+                          item.value === detailsMovie?.status && (
                             <span
                               key={index}
                               className="rounded-full px-3 py-1 inline-flex items-center gap-2"
@@ -83,9 +82,9 @@ const MovieInfo = () => {
                         <p className="underline font-bold text-md">
                           Quốc gia:{" "}
                         </p>
-                        {movie?.country &&
-                          movie?.country.length > 0 &&
-                          movie?.country.map((item, index) => (
+                        {detailsMovie?.country &&
+                          detailsMovie?.country.length > 0 &&
+                          detailsMovie?.country.map((item, index) => (
                             <span
                               key={index}
                               className="uppercase text-smd px-2 bg-light text-secondary rounded-md font-bold inline-flex items-center"
@@ -96,7 +95,7 @@ const MovieInfo = () => {
                       </div>
                     </div>
                     <div className="h-[100px]">
-                      <MovieDetailsTable data={movie} />
+                      <MovieDetailsTable data={detailsMovie} />
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                       <div className="font-bold text-smd">
@@ -106,9 +105,9 @@ const MovieInfo = () => {
                         </span>
                       </div>
                       <ul className="flex flex-row gap-2 w-full px-2">
-                        {movie?.category &&
-                          movie?.category.length > 0 &&
-                          movie?.category.map((item, index) => (
+                        {detailsMovie?.category &&
+                          detailsMovie?.category.length > 0 &&
+                          detailsMovie?.category.map((item, index) => (
                             <MovieDetailsCategory category={item} key={index} />
                           ))}
                       </ul>
@@ -124,9 +123,9 @@ const MovieInfo = () => {
                           </span>
                         </div>
                         <ul className="flex flex-row gap-2 w-full scrollbar items-start px-2">
-                          {movie?.actor &&
-                            movie?.actor.length > 0 &&
-                            movie?.actor
+                          {detailsMovie?.actor &&
+                            detailsMovie?.actor.length > 0 &&
+                            detailsMovie?.actor
                               .slice(0, 5)
                               .map((item, index) => (
                                 <MovieDetailsActor actor={item} key={index} />
@@ -153,8 +152,8 @@ const MovieInfo = () => {
                             className="italic text-smd desription-content break-word"
                             dangerouslySetInnerHTML={{
                               __html:
-                                movie?.content &&
-                                movie?.content.replace("<br>", ""),
+                                detailsMovie?.content &&
+                                detailsMovie?.content.replace("<br>", ""),
                             }}
                           ></div>
                         </div>
@@ -170,8 +169,8 @@ const MovieInfo = () => {
                         </div>
                         <div className="h-full pb-2 animate-[opacityTrailer_4s_ease-in-out]">
                           <MovieDetailsTrailer
-                            trailer={movie.trailer_url}
-                            poster={movie.poster_url}
+                            trailer={detailsMovie?.trailer_url}
+                            poster={detailsMovie?.poster_url}
                           />
                         </div>
                       </div>

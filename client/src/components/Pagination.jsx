@@ -6,7 +6,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const Pagination = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { totalPage } = useSelector((state) => state.movies);
+  const { totalPage } = useSelector((state) => state.movies.getMovies);
   const [searchParams] = useSearchParams();
 
   let keywordParams = searchParams.get("keyword") || "";

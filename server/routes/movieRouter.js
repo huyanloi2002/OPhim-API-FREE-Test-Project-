@@ -4,18 +4,20 @@ const {
   addMovie,
   getMovies,
   updateMovie,
-  likeMovie,
-  getMovieById,
-  getMoviesLiked,
+  getDetailsMovie,
   addDetailsMovies,
+  likeMovie,
+  getLikedMovie,
 } = require("../controller/movieController");
 
-router.get("/movie", addMovie);
+const { verifyToken } = require("../middleware/verifyToken");
+
 router.get("/movies", getMovies);
+router.get("/details_movie/:slug", getDetailsMovie);
+router.get("/movie", addMovie);
 router.put("/update_movie", updateMovie);
-router.patch("/like_movie/:id", likeMovie);
-router.get("/movie_by_id/:id", getMovieById);
-router.get("/movies_liked", getMoviesLiked);
 router.post("/add_details_movies", addDetailsMovies);
+router.patch("/like_movie", verifyToken, likeMovie);
+router.get("/liked_movie", verifyToken, getLikedMovie);
 
 module.exports = router;

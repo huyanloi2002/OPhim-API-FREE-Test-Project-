@@ -11,10 +11,6 @@ const movieSchema = new mongoose.Schema(
     thumb_url: String,
     poster_url: String,
     year: Number,
-    is_like: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     timestamps: true,

@@ -25,9 +25,12 @@ const App = () => {
 
   useEffect(() => {
     const isLogin = localStorage.getItem("isLogin");
-    console.log(isLogin);
     setIsLogin(isLogin);
   }, []);
+
+  useEffect(() => {
+    dispatch(getUserCurrentAction());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getUserCurrentAction());

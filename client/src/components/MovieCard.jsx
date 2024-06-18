@@ -1,35 +1,14 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import { useSelector } from "react-redux";
-import LoadingMovieCard from "./Loading/LoadingMovieCard";
+import LoadingMovieCard from "../components/Loading/LoadingMovieCard";
 
 const MovieCard = ({ item }) => {
   const { imagePath } = useSelector((state) => state.movies);
-
-  const movieInfoCardState = {
-    episode_current: "",
-    quality: "",
-  };
-  const [movieInfoCard, setMovieInfoCard] = useState(movieInfoCardState);
-
-  useEffect(() => {
-    const slug = item.slug;
-    if (slug) {
-      const fetchMovieInfo = async () => {
-        const res = await axios.get(`https://ophim1.com/phim/${slug}`);
-
-        const { episode_current, quality } = res.data.movie;
-
-        setMovieInfoCard({ episode_current, quality });
-      };
-      fetchMovieInfo();
-    }
-    return () => {};
-  }, [item.slug]);
+  const { isLoading } = useSelector((state) => state.movies.getMovies);
 
   return (
     <React.Fragment>
-      {movieInfoCard.episode_current && movieInfoCard.quality ? (
+      {!isLoading ? (
         <div className="h-[300px] w-[200px] cursor-pointer group overflow-hidden rounded-md">
           <div className="w-full h-full relative">
             <img
@@ -46,15 +25,11 @@ const MovieCard = ({ item }) => {
                   <p
                     className="px-2 py-1 text-sm font-bold bg-primary rounded-br-md rounded-tl-md"
                     title="Episode"
-                  >{`${
-                    movieInfoCard.episode_current
-                      ? movieInfoCard.episode_current
-                      : ""
-                  }`}</p>
+                  >{`${item.episode_current ? item.episode_current : ""}`}</p>
                   <p
                     className="quality text-light font-bold text-sm bg-red text-center rounded-bl-md rounded-tr-md px-2 py-1"
                     title="Quality"
-                  >{`${movieInfoCard.quality ? movieInfoCard.quality : ""}`}</p>
+                  >{`${item.quality ? item.quality : ""}`}</p>
                 </div>
                 <div className="text-left group" title="Save">
                   <i

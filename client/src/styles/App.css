@@ -9,6 +9,7 @@ body {
   font-family: var(--font-ff);
   color: #fff;
   -webkit-font-smoothing: antialiased;
+  transition-behavior: allow-discrete;
 }
 ::-webkit-scrollbar {
   display: none;

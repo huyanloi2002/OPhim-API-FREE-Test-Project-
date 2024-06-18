@@ -3,6 +3,7 @@ const axios = require("axios");
 const APIFeatures = require("../utils/APIFeatures");
 const countItemsQuery = require("../utils/countItemsQuery");
 const Details_Movie = require("../models/detailsMovieModel");
+const Liked_Movie = require("../models/likedMovieModel");
 
 const movieController = {
   addMovie: async (req, res) => {
@@ -38,40 +39,12 @@ const movieController = {
       return res.status(500).json({ msg: err.message });
     }
   },
-
-  getMovies: async (req, res) => {
-    try {
-      let totalItems = 24;
-      const apiFeatures = new APIFeatures(Movie.find(), req.query)
-        .search()
-        .filter()
-        .sort();
-
-      const countTotalItems = await countItemsQuery(req.query);
-
-      apiFeatures.pagination(totalItems);
-
-      const movies = await apiFeatures.query;
-
-      res.json({
-        countTotalItems,
-        totalPage: Math.ceil(countTotalItems / totalItems),
-        countPageItems: movies.length,
-        movies,
-      });
-    } catch (err) {
-      return res.status(500).json({
-        msg: err.message,
-      });
-    }
-  },
-
   updateMovie: async (req, res) => {
     try {
       const movie = await Movie.find().sort({ modified: -1 });
 
       let listUpdate = [];
-      for (let i = 1; i <= 3; i++) {
+      for (let i = 1; i <= 5; i++) {
         const result = await axios.get(
           `https://ophim1.com/danh-sach/phim-moi-cap-nhat?page=${i}`
         );
@@ -83,7 +56,7 @@ const movieController = {
       }
 
       const newMovieCurrent = new Date(movie[0].modified.time).getTime();
-
+      // let listNewMovie = [];
       for (let i = 0; i < listUpdate.length; i++) {
         let newMovieUpdate = new Date(listUpdate[i].modified.time).getTime();
         if (newMovieUpdate > newMovieCurrent) {
@@ -92,93 +65,23 @@ const movieController = {
             listUpdate[i],
             { upsert: true }
           );
+          const res = await axios.get(
+            `https://ophim1.com/phim/${listUpdate[i].slug}`
+          );
+          const details = res.data.movie;
+          await Details_Movie.findByIdAndUpdate(
+            { _id: listUpdate[i]._id },
+            { ...details, movie_id: listUpdate[i]._id },
+            { upsert: true }
+          );
+          // listNewMovie.push(listUpdate[i]);
         }
       }
+      // res.json(listNewMovie.length);
       res.json({ msg: "Update success" });
     } catch (err) {
       return res.status(500).json({
         msg: err.message,
-      });
-    }
-  },
-
-  likeMovie: async (req, res) => {
-    try {
-      const { id } = req.params;
-
-      const movie = await Movie.findById(id);
-
-      if (!movie) {
-        return res.status(400).json({
-          msg: "Movie not found!",
-          msg_vn: "Phim không tông tại!",
-          success: false,
-        });
-      }
-
-      const updateMovie = await Movie.findByIdAndUpdate(
-        id,
-        {
-          is_like: !movie.is_like,
-        },
-        { new: true }
-      );
-
-      if (updateMovie.is_like) {
-        res.status(200).json({
-          msg: "Added movie to favorites.",
-          msg_vn: "Đã thêm phim vào danh mục yêu thích",
-          success: true,
-          is_like: updateMovie.is_like,
-        });
-      } else {
-        res.status(200).json({
-          msg: "Removed movie to favorites.",
-          msg_vn: "Đã xóa phim khỏi danh mục yêu thích",
-          success: true,
-          updateMovie,
-          is_like: updateMovie.is_like,
-        });
-      }
-    } catch (err) {
-      return res.status(500).json({ msg: err.message, success: false });
-    }
-  },
-
-  getMovieById: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const movie = await Movie.findById(id);
-
-      if (!movie) {
-        return res.status(400).json({
-          msg: "Movie not found!",
-          msg_vn: "Phim không tông tại!",
-          success: false,
-        });
-      }
-
-      res.json({
-        movie,
-        success: true,
-      });
-    } catch (err) {
-      return res.status(500).json({
-        msg: err.message,
-      });
-    }
-  },
-
-  getMoviesLiked: async (req, res) => {
-    try {
-      const is_like = true;
-      const moviesLiked = await Movie.find({ is_like });
-
-      res.json({ moviesLiked });
-    } catch (err) {
-      return res.status(500).json({
-        msg: err.message,
-        success: false,
       });
     }
   },
@@ -219,8 +122,117 @@ const movieController = {
       });
     }
   },
+  getMovies: async (req, res) => {
+    try {
+      let totalItems = 24;
+      const apiFeatures = new APIFeatures(Movie.find(), req.query)
+        .search()
+        .filter()
+        .sort();
+
+      const countTotalItems = await countItemsQuery(req.query);
+
+      apiFeatures.pagination(totalItems);
+
+      const list_movies = await apiFeatures.query;
+
+      let movies = [];
+      for (let i = 0; i < list_movies.length; i++) {
+        const details = await Details_Movie.findOne({
+          movie_id: list_movies[i]._id,
+        });
+
+        movies.push({
+          ...list_movies[i]._doc,
+          episode_current: details.episode_current,
+          quality: details.quality,
+        });
+      }
+
+      res.json({
+        countTotalItems,
+        totalPage: Math.ceil(countTotalItems / totalItems),
+        countPageItems: movies.length,
+        movies,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+      });
+    }
+  },
+  getDetailsMovie: async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const details_movie = await Details_Movie.findOne({ slug: slug });
+
+      if (!details_movie) {
+        return res.status(400).json({
+          msg: "Movie not found!",
+          msg_vn: "Phim không tông tại!",
+          success: false,
+        });
+      }
+
+      res.json({
+        details_movie,
+        success: true,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+      });
+    }
+  },
+  likeMovie: async (req, res) => {
+    try {
+      const user_id = req.user.id;
+      const movie_id = req.body.movie_id;
+
+      const like_movies = await Liked_Movie.findOne({ user_id, movie_id });
+
+      if (!like_movies) {
+        const likeMovie = new Liked_Movie({
+          user_id,
+          movie_id,
+        });
+
+        await likeMovie.save();
+
+        return res.status(200).json({
+          msg: "Add a movie to favorite!",
+          success: true,
+        });
+      } else {
+        await Liked_Movie.findByIdAndDelete(like_movies._id);
+
+        return res.status(200).json({
+          msg: "Remove a movie from favorite!",
+          success: true,
+        });
+      }
+    } catch (err) {
+      return res.status(500).json({ msg: err.message, success: false });
+    }
+  },
+  getLikedMovie: async (req, res) => {
+    try {
+      const user_id = req.user.id;
+
+      const liked_movies = await Liked_Movie.find({ user_id }).populate(
+        "movie_id"
+      );
+
+      res.json({
+        liked_movies,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+        success: false,
+      });
+    }
+  },
 };
-
-
 
 module.exports = movieController;

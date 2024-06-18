@@ -7,98 +7,42 @@ const cityCodeIdentify = require("../data/cityCodeIdentify.json");
 const bcrypt = require("bcryptjs");
 
 const userController = {
-  getCurrentUser: async (req, res) => {
+  checkUserFromClient: async (req, res) => {
     try {
-      const user_id = req.user.id;
+      const { email, password, type } = req.body;
 
-      const user = await User.findById({ _id: user_id });
+      const user = await User.findOne({ email });
 
-      if (!user) {
-        return res.status(400).json({
-          msg: "Token is not valid or user not found!",
-          msg_vn: "Tài khoản không tồn tại!",
-          success: false,
-        });
-      }
-
-      const login_history = await Login_History.find({ user_id });
-
-      return res.status(200).json({
-        user: {
-          ...user._doc,
-          login_history,
-          password: "",
-        },
-        success: true,
-      });
-    } catch (err) {
-      return res.status(500).json({
-        msg: err.message,
-        success: false,
-      });
-    }
-  },
-  updateUser: async (req, res) => {
-    try {
-      const user_id = req.user.id;
-
-      if (req.body.email) {
-        return res.status(400).json({
-          msg: "Email cann't be changed!",
-          msg_vn: "Email không thể thay đổi, vì lý do bảo mật!",
-          success: false,
-        });
-      }
-
-      let updateData = {
-        ...req.body,
-      };
-
-      if (updateData.avatar) {
-        const user = await User.findById({ _id: user_id });
-
-        if (user.avatar.isChange) {
-          const public_id = user.avatar.public_id;
-          await cloudinary.uploader.destroy(public_id);
-        }
-
-        await cloudinary.uploader.upload(
-          updateData.avatar,
-          {
-            folder: "movies_project/avatar",
-            width: 200,
-            crop: "scale",
-          },
-          (error, result) => {
-            if (error) {
-              return res.status(500).json({
-                msg: error,
-                success: false,
-              });
-            }
-
-            updateData = {
-              ...updateData,
-              avatar: {
-                public_id: result.public_id,
-                url: result.secure_url,
-                isChange: true,
-              },
-            };
+      if (type === "login") {
+        if (!user) {
+          return res.json({
+            isCheckEmail: false,
+          });
+        } else if (user) {
+          let isMatch = await bcrypt.compare(password, user.password);
+          if (!isMatch) {
+            return res.json({
+              isCheckEmail: true,
+              isCheckPassword: false,
+            });
+          } else {
+            return res.json({
+              isCheckEmail: true,
+              isCheckPassword: true,
+            });
           }
-        );
+        }
+      } else if (type === "register") {
+        if (user) {
+          return res.json({
+            isCheckEmail: true,
+          });
+        } else if (!user) {
+          return res.json({
+            isCheckEmail: false,
+          });
+        }
       }
-
-      const updateUser = await User.findByIdAndUpdate(user_id, updateData, {
-        new: true,
-      });
-
-      return res.status(200).json({
-        updateUser,
-        success: true,
-        msg: "Updated succeed!",
-        msg_vn: "Cập nhật thành công!",
-      });
     } catch (err) {
       return res.status(500).json({
         msg: err.message,
@@ -106,6 +50,7 @@ const userController = {
       });
     }
   },
+  //Admin
   getAllUser: async (req, res) => {
     try {
       const user_id = req.user.id;
@@ -138,6 +83,38 @@ const userController = {
           success: true,
         });
       }
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+        success: false,
+      });
+    }
+  },
+  //User
+  getCurrentUser: async (req, res) => {
+    try {
+      const user_id = req.user.id;
+
+      const user = await User.findById({ _id: user_id });
+
+      if (!user) {
+        return res.status(400).json({
+          msg: "Token is not valid or user not found!",
+          msg_vn: "Tài khoản không tồn tại!",
+          success: false,
+        });
+      }
+
+      const login_history = await Login_History.find({ user_id });
+
+      return res.status(200).json({
+        user: {
+          ...user._doc,
+          login_history,
+          password: "",
+        },
+        success: true,
+      });
     } catch (err) {
       return res.status(500).json({
         msg: err.message,
@@ -296,42 +273,67 @@ const userController = {
       });
     }
   },
-  checkUserFromClient: async (req, res) => {
+  updateUser: async (req, res) => {
     try {
-      const { email, password, type } = req.body;
+      const user_id = req.user.id;
 
-      const user = await User.findOne({ email });
-
-      if (type === "login") {
-        if (!user) {
-          return res.json({
-            isCheckEmail: false,
-          });
-        } else if (user) {
-          let isMatch = await bcrypt.compare(password, user.password);
-          if (!isMatch) {
-            return res.json({
-              isCheckEmail: true,
-              isCheckPassword: false,
-            });
-          } else {
-            return res.json({
-              isCheckEmail: true,
-              isCheckPassword: true,
-            });
-          }
-        }
-      } else if (type === "register") {
-        if (user) {
-          return res.json({
-            isCheckEmail: true,
-          });
-        } else if (!user) {
-          return res.json({
-            isCheckEmail: false,
-          });
-        }
+      if (req.body.email) {
+        return res.status(400).json({
+          msg: "Email cann't be changed!",
+          msg_vn: "Email không thể thay đổi, vì lý do bảo mật!",
+          success: false,
+        });
       }
+
+      let updateData = {
+        ...req.body,
+      };
+
+      if (updateData.avatar) {
+        const user = await User.findById({ _id: user_id });
+
+        if (user.avatar.isChange) {
+          const public_id = user.avatar.public_id;
+          await cloudinary.uploader.destroy(public_id);
+        }
+
+        await cloudinary.uploader.upload(
+          updateData.avatar,
+          {
+            folder: "movies_project/avatar",
+            width: 200,
+            crop: "scale",
+          },
+          (error, result) => {
+            if (error) {
+              return res.status(500).json({
+                msg: error,
+                success: false,
+              });
+            }
+
+            updateData = {
+              ...updateData,
+              avatar: {
+                public_id: result.public_id,
+                url: result.secure_url,
+                isChange: true,
+              },
+            };
+          }
+        );
+      }
+
+      const updateUser = await User.findByIdAndUpdate(user_id, updateData, {
+        new: true,
+      });
+
+      return res.status(200).json({
+        updateUser,
+        success: true,
+        msg: "Updated succeed!",
+        msg_vn: "Cập nhật thành công!",
+      });
     } catch (err) {
       return res.status(500).json({
         msg: err.message,

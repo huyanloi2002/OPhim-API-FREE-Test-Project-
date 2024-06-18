@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import moment from "moment";
-import image_default from "../assets/images/img_default.jpg";
+import image_default from "../assets/images/image_default.jpg";
 
 const MySupport = ({ data }) => {
   const [isExtends, setIsExtends] = useState(false);

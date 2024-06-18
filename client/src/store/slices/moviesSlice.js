@@ -1,23 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  getMovieByIdAction,
+  getDetailsMovieAction,
   getMoviesAction,
-  getMovieLikedAction,
 } from "../actions/moviesAction";
 
 const initialState = {
   imagePath: "",
-  pagination: {},
-  movieDetails: {},
-  statusMovieDetails: false,
-  countTotalItems: 0,
-  totalPage: 0,
-  movieListNew: [],
-  loading: "",
-  error: null,
-  message: "",
-  is_like: false,
-  movieById: {},
+  getMovies: {
+    movieListNew: [],
+    isLoading: false,
+    isSuccess: false,
+    error: null,
+    message: null,
+    countTotalItems: 0,
+    totalPage: 0,
+  },
+  getDetailsMovie: {
+    detailsMovie: {},
+    isLoading: false,
+    error: null,
+    message: null,
+  },
 };
 
 const moviesSlice = createSlice({
@@ -27,61 +30,39 @@ const moviesSlice = createSlice({
     imagePathAction: (state, action) => {
       state.imagePath = action.payload;
     },
-    paginationAction: (state, action) => {
-      state.pagination = action.payload;
-    },
-    movieDetailsAction: (state, action) => {
-      state.movieDetails = action.payload;
-      state.statusMovieDetails = action.payload.status;
-    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getMoviesAction.pending, (state) => {
-        state.loading = "pending";
+        state.getMovies.isLoading = true;
+        state.getMovies.isSuccess = false;
       })
       .addCase(getMoviesAction.fulfilled, (state, action) => {
-        state.movieListNew = action.payload.movies;
-        state.countTotalItems = action.payload.countTotalItems;
-        state.totalPage = action.payload.totalPage;
-        state.loading = "fulfilled";
+        state.getMovies.movieListNew = action.payload.movies;
+        state.getMovies.countTotalItems = action.payload.countTotalItems;
+        state.getMovies.totalPage = action.payload.totalPage;
+        state.getMovies.isLoading = false;
+        state.getMovies.isSuccess = true;
       })
       .addCase(getMoviesAction.rejected, (state, action) => {
-        state.loading = "rejected";
-        state.error = action.error;
+        state.getMovies.isLoading = false;
+        state.getMovies.error = action.error;
+        state.getMovies.isSuccess = false;
       })
-      .addCase(getMovieLikedAction.pending, (state) => {
-        state.loading = "pending/like";
+      .addCase(getDetailsMovieAction.pending, (state) => {
+        state.getDetailsMovie.isLoading = true;
       })
-      .addCase(getMovieLikedAction.fulfilled, (state, action) => {
-        state.loading = "fulfilled/like";
-        state.message = action.payload.msg_vn;
-        state.is_like = action.payload.is_like;
+      .addCase(getDetailsMovieAction.fulfilled, (state, action) => {
+        state.getDetailsMovie.isLoading = false;
+        state.getDetailsMovie.detailsMovie = action.payload.details_movie;
       })
-      .addCase(getMovieLikedAction.rejected, (state, action) => {
-        state.loading = "rejected/like";
-        state.error = action.error;
-      })
-      .addCase(getMovieByIdAction.pending, (state) => {
-        state.loading = "pending";
-      })
-      .addCase(getMovieByIdAction.fulfilled, (state, action) => {
-        state.loading = "fulfilled";
-        state.movieById = action.payload.movie;
-      })
-      .addCase(getMovieByIdAction.rejected, (state, action) => {
-        state.loading = "rejected";
-        state.error = action.error;
+      .addCase(getDetailsMovieAction.rejected, (state, action) => {
+        state.getDetailsMovie.isLoading = false;
+        state.getDetailsMovie.error = action.error;
       });
   },
 });
 
-export const {
-  imagePathAction,
-  paginationAction,
-  movieDetailsAction,
-  searchAction,
-  pageAction,
-} = moviesSlice.actions;
+export const { imagePathAction } = moviesSlice.actions;
 
 export default moviesSlice.reducer;

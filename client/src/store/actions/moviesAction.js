@@ -3,28 +3,30 @@ import axios from "axios";
 
 export const getMoviesAction = createAsyncThunk(
   "movies/listMovies",
-  async ({ page = 1, keyword = "" }) => {
-    const res = await axios.get(
-      `/api/v1/movie-test-project/movies?keyword=${keyword}&page=${page}`
-    );
-    return res.data;
+  async ({ page = 1, keyword = "" }, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `/api/v1/movie-test-project/movies?keyword=${keyword}&page=${page}`
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
-export const getMovieByIdAction = createAsyncThunk(
+export const getDetailsMovieAction = createAsyncThunk(
   "movies/movieById",
-  async (id) => {
-    const res = await axios.get(`/api/v1/movie-test-project/movie_by_id/${id}`);
-    return res.data;
-  }
-);
+  async (slug, { rejectWithValue }) => {
+    try {
+      console.log(slug);
 
-export const getMovieLikedAction = createAsyncThunk(
-  "movies/likeMovie",
-  async (id) => {
-    const res = await axios.patch(
-      `/api/v1/movie-test-project/like_movie/${id}`
-    );
-    return res.data;
+      const res = await axios.get(
+        `/api/v1/movie-test-project/details_movie/${slug}`
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );

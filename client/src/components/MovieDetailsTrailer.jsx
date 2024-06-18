@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const MovieDetailsTrailer = ({ trailer, poster }) => {
-  const youtubeUrl = `https://www.youtube.com/embed/${trailer.split("=")[1]}`;
+  const [url, setUrl] = useState("");
+  useEffect(() => {
+    if (trailer) {
+      const youtubeUrl = `https://www.youtube.com/embed/${
+        trailer.split("=")[1]
+      }`;
+
+      setUrl(youtubeUrl);
+    }
+  }, [trailer]);
 
   return (
     <React.Fragment>
@@ -9,7 +18,7 @@ const MovieDetailsTrailer = ({ trailer, poster }) => {
         <div className="h-[200px] w-full">
           <iframe
             className="w-full rounded-md h-full bg-transparent"
-            src={youtubeUrl}
+            src={url}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"

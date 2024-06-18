@@ -1,22 +1,11 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getMovieLikedAction,
-  getMovieByIdAction,
-} from "../store/actions/moviesAction";
 import { alertAction } from "../store/slices/alertSlice";
 import MenuShare from "./MenuShare";
 
 const MenuThumb = () => {
   const dispatch = useDispatch();
-  const { loading, message, movieById, is_like, movieDetails } = useSelector(
-    (state) => state.movies
-  );
-  const { movie } = movieDetails;
-
-  useEffect(() => {
-    dispatch(getMovieByIdAction(movie._id));
-  }, [movie, dispatch, message]);
+  const { detailsMovie } = useSelector((state) => state.movies.getDetailsMovie);
 
   const handleCopyUrl = (dispatch) => {
     //Lấy link url hiện tại tại trang
@@ -55,21 +44,7 @@ const MenuThumb = () => {
 
     return newWindow;
   };
-  const handleLikeMovie = ({ ...props }) => {
-    const { id, dispatch } = props;
-    dispatch(getMovieLikedAction(id));
-  };
-
-  useEffect(() => {
-    if (loading === "fulfilled/like") {
-      dispatch(
-        alertAction({
-          title: message,
-          color: is_like ? "green" : "red",
-        })
-      );
-    }
-  }, [dispatch, message, loading, is_like]);
+  // const handleLikeMovie = () => {};
 
   const menuThumb = useMemo(
     () => [
@@ -97,7 +72,7 @@ const MenuThumb = () => {
         name: "Yêu thích",
         icon: "fa-solid fa-heart",
         color: "text-red",
-        handle: () => handleLikeMovie({ id: movie._id, dispatch }),
+        handle: () => {},
         extras: [],
       },
       {
@@ -125,15 +100,8 @@ const MenuThumb = () => {
         ],
       },
     ],
-    [movie._id, dispatch]
+    [dispatch]
   );
-
-  useEffect(() => {
-    const textMenuLike = document.querySelector(".text-menu-like");
-    textMenuLike.textContent = movieById.is_like ? "Đã yêu thích" : "Yêu thích";
-
-    return () => {};
-  }, [movieById]);
 
   return (
     <React.Fragment>
@@ -150,7 +118,7 @@ const MenuThumb = () => {
             <span className="inline-flex flex-col py-5 gap-1">
               <i
                 className={`${item.icon} text-xl24 ${
-                  movieById.is_like && item.key === "like"
+                  detailsMovie.is_like && item.key === "like"
                     ? `opacity-100 scale-125 ${item.color}`
                     : "opacity-70"
                 } group-hover/list_menu:opacity-100 group-hover/list_menu:scale-125 duration-200 transition-all ease-in-out `}

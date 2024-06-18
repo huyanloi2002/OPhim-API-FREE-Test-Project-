@@ -13,6 +13,7 @@ const movieRouter = require("./routes/movieRouter");
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
 const supportRouter = require("./routes/supportRouter");
+const watchListRouter = require("./routes/watchListRouter");
 
 const app = express();
 app.use(express.json({ limit: "50mb" }));
@@ -40,6 +41,7 @@ app.use("/api/v1/movie-test-project", movieRouter);
 app.use("/api/v1/movie-test-project", authRouter);
 app.use("/api/v1/movie-test-project", userRouter);
 app.use("/api/v1/movie-test-project", supportRouter);
+app.use("/api/v1/movie-test-project", watchListRouter);
 
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {

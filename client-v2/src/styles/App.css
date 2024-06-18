@@ -1,0 +1,24 @@
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  color: #ffffff;
+  background-color: rgb(84, 84, 84);
+}
+
+input::placeholder {
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+p,
+blockquote {
+  margin: 0;
+  padding: 0;
+}
