@@ -1,8 +1,18 @@
 import React, { useCallback, useState } from "react";
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
 
-const Slide = ({ children }) => {
+const Slide = ({
+  children,
+  previewSlide = 1,
+  spaceSlide = 0,
+  rounded = "1.5rem",
+  stylePrevPagination = "",
+  styleNextPagination = "",
+  styleDotPagination = "",
+  isDotPagination = true,
+}) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const totalPagination = Math.floor((children.length - 1) / previewSlide);
 
   const handlePrevSlide = useCallback(() => {
     setCurrentSlide((prev) => {
@@ -16,12 +26,12 @@ const Slide = ({ children }) => {
 
   const handleNextSlide = useCallback(() => {
     setCurrentSlide((prev) => {
-      if (prev >= children.length - 1) {
+      if (prev >= totalPagination) {
         setCurrentSlide(0);
       }
       return prev + 1;
     });
-  }, [children]);
+  }, [totalPagination]);
 
   const handleClickPaginationSlide = (prev) => {
     setCurrentSlide(prev);
@@ -29,37 +39,51 @@ const Slide = ({ children }) => {
 
   return (
     <React.Fragment>
-      <div className="h-full w-full relative overflow-hidden rounded-3xl">
+      <div
+        className="h-full w-full relative overflow-hidden flex z-50 items-center"
+        style={{ borderRadius: rounded }}
+      >
         <div
-          className="h-full w-full flex duration"
+          className="h-full w-full flex flex-nowrap"
           style={{
             transition: "all 0.5s ease-in-out",
-            transform: `translateX(-${100 * currentSlide}%)`,
+            transform: `translateX(${-100 * currentSlide}%)`,
           }}
         >
           {children.map((item, index) => (
-            <div key={index} className="flex-shrink-0 w-full h-full">
+            <div
+              key={index}
+              className="flex-shrink-0"
+              style={{
+                width: `${100 / previewSlide}%`,
+                paddingLeft: `${spaceSlide}px`,
+                paddingRight: `${spaceSlide}px`,
+              }}
+            >
               {item}
             </div>
           ))}
         </div>
-        <div className="absolute right-0 top-0 px-8 py-8 rounded-3xl w-[50%] h-full flex flex-col justify-between items-end z-10">
-          <div className="flex flex-row gap-3 items-center">
-            <span
-              className="h-[40px] w-[40px] border rounded-full flex justify-center items-center cursor-pointer"
-              onClick={handlePrevSlide}
-            >
-              <HiOutlineChevronLeft className="text-lg text-light" />
-            </span>
-            <span
-              className="h-[40px] w-[40px] border rounded-full flex justify-center items-center cursor-pointer"
-              onClick={() => handleNextSlide()}
-            >
-              <HiOutlineChevronRight className="text-lg text-light" />
-            </span>
-          </div>
-          <ul className="flex gap-2">
-            {children.map((item, index) => (
+
+        <span
+          className={`!absolute ${
+            stylePrevPagination ? stylePrevPagination : "left-0"
+          }  h-[40px] w-[40px] rounded-full flex justify-center items-center cursor-pointer bg-light text-dark shadow-2xl`}
+          onClick={handlePrevSlide}
+        >
+          <HiOutlineChevronLeft className="text-lg" />
+        </span>
+        <span
+          className={`!absolute ${
+            styleNextPagination ? styleNextPagination : "right-0"
+          } h-[40px] w-[40px] rounded-full flex justify-center items-center cursor-pointer bg-light text-dark shadow-2xl`}
+          onClick={() => handleNextSlide()}
+        >
+          <HiOutlineChevronRight className="text-lg" />
+        </span>
+        {isDotPagination && (
+          <ul className={`flex gap-2 !absolute bottom-0 ${styleDotPagination}`}>
+            {children.slice(0, totalPagination + 1).map((item, index) => (
               <li
                 key={index}
                 className={`${
@@ -71,7 +95,7 @@ const Slide = ({ children }) => {
               ></li>
             ))}
           </ul>
-        </div>
+        )}
       </div>
     </React.Fragment>
   );

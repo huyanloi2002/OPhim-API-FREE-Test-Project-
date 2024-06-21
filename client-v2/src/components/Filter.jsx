@@ -57,7 +57,7 @@ const Filter = () => {
             className="btn-reset gap-1 h-[30px] text-red-dark items-center border px-2 py-[0.15rem] rounded-full border-red-dark hover:px-3 duration-200 transition-all ease-in-out"
           >
             <FaRegCircleXmark />
-            <p className="text-md">Reset</p>
+            <p className="text-sm font-b700 w-[40px]">Tạo lại</p>
           </button>
         </div>
         <div className="flex flex-col justify-between gap-2 h-full">

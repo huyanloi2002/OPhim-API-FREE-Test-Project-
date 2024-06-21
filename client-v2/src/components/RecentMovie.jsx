@@ -10,9 +10,10 @@ const RecentMovie = () => {
           icon="&#128293;"
           text="Phim gần đây"
           className="text-md font-b700"
+          isMore={true}
         />
         <div className="h-[565px] w-full overflow-y-scroll">
-          <div className="flex flex-col gap-3 w-full">
+          <div className="flex flex-col gap-2 w-full">
             <MovieCardRecentt />
             <MovieCardRecentt />
             <MovieCardRecentt />

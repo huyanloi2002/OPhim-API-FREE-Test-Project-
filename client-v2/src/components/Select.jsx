@@ -122,7 +122,7 @@ export const Radio = ({ item, name, value, setValue }) => {
         className="flex flex-row gap-2 items-center cursor-pointer"
         onClick={() => setValue[1](item[value])}
       >
-        <button className="text-dark text-sm border-2 border-slate-500 rounded-full h-[15px] aspect-square flex items-center justify-center">
+        <button className="text-dark text-sm border-2 border-slate-500 rounded-full h-[15px] w-[15px] aspect-square flex items-center justify-center">
           {setValue[0] === item[value] && (
             <FaCircleDot className="text-[15px] p-[0.05rem] text-slate-500" />
           )}
