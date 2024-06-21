@@ -84,31 +84,64 @@ export const MovieCardHorizontal = () => {
 export const MovieCardVertical = () => {
   return (
     <React.Fragment>
-      <div className="w-full h-[305px] rounded-lg relative cursor-pointer shadow-md group/card overflow-hidden">
-        <img
-          src="https://resizing.flixster.com/OBCMbeYEWS5tI2QhErFskxKyEa0=/206x305/v2/https://resizing.flixster.com/mPJp85eApHd8ih9XF5E9d3-2LbM=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzUxODlkZDE1LTQyYjUtNDg5ZS05NjZmLWMxZDk1YWZhN2E1ZC5qcGc="
-          alt="poster_url"
-          className=" h-full w-full block object-cover rounded-lg group-hover/card:scale-110 duration-500 transition-all ease-in-out"
-        />
-        <div className="h-full w-full z-9 bg-opacity-dark-0.1 rounded-lg absolute top-0 right-0 group-hover/card:scale-110 group-hover/card:bg-opacity-dark-0.5 duration-500 transition-all ease-in-out"></div>
-
-        <div className="lg:h-[20%] h-[25%] w-full absolute bottom-0 rounded-b-lg bg-opacity-dark-0.8 flex justify-center items-center py-2 z-10">
-          <p className="text-xmd font-bold  line-clamp-2 text-ellipsis text-center w-[100px] lg:text-md">
+      <div className="flex gap-3 w-full h-[120px] items-center bg-opacity-white-0.8 text-dark p-2 rounded-xl overflow-hidden cursor-pointer relative">
+        <div>
+          <img
+            src="https://resizing.flixster.com/OBCMbeYEWS5tI2QhErFskxKyEa0=/206x305/v2/https://resizing.flixster.com/mPJp85eApHd8ih9XF5E9d3-2LbM=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzUxODlkZDE1LTQyYjUtNDg5ZS05NjZmLWMxZDk1YWZhN2E1ZC5qcGc="
+            alt="poster_url"
+            className="h-[100px] w-[100px] object-cover rounded-xl"
+          />
+        </div>
+        <div className="flex flex-col text-sm gap-[0.3rem]">
+          <p className="text-md w-[155px] font-b700 line-clamp-1">
             Deadpool & Wolverines
           </p>
-        </div>
-        <div className="text-sm font-b900 flex flex-col items-start absolute top-2 left-0  gap-1 uppercase tracking-wider ">
-          <p className="bg-green-dark  px-2 rounded-r-md shadow-md">FHD</p>
-          <p className="bg-red-dark  px-2 rounded-r-md shadow-md">Vietsub</p>
-          <p className="bg-[orange]  px-2 rounded-r-md shadow-md">Full</p>
-        </div>
-        <div className="absolute top-0 right-2 opacity-0 pointer-events-none group-hover/card:opacity-100 group-hover/card:pointer-events-auto duration-500 transition-all ease-in-out hover:text-primary text-light z-50">
-          <i className="fa-solid fa-bookmark text-xxl drop-shadow-lg "></i>
-        </div>
-        <div className="h-full w-full z-11 rounded-lg absolute top-0 flex opacity-0 pointer-events-none items-center duration-500 transition-all ease-in-out group-hover/card:opacity-100 group-hover/card:pointer-events-auto">
-          <div className="h-[35px] w-[35px mx-auto rounded-full flex justify-center items-center">
-            <FaCirclePlay className="text-[50px] text-dark" />
+          <div className="flex gap-1 text-sm">
+            <p className="bg-dark text-light px-2 rounded-full">Action</p>
+            <p className="bg-dark text-light px-2 rounded-full">Adventure</p>
+            <p className="bg-dark text-light px-2 rounded-full">Comedy</p>
           </div>
+          <div className="flex gap-2 items-center">
+            <span className="inline-flex items-end gap-1">
+              <img
+                src={imdb}
+                alt="imdb"
+                className="W-[15px] h-[15px] object-cover rounded-full"
+              />
+              <span className="font-bold">8.6</span>
+            </span>
+            <span className="inline-flex items-end gap-1">
+              <img
+                src={tmdb}
+                alt="tmdb"
+                className="W-[15px] h-[15px]  object-cover rounded-full"
+              />
+              <span className="font-bold">7.3</span>
+            </span>
+          </div>
+          <div className="flex gap-1 text-md13 text-[orange]">
+            <div className="flex gap-[0.5remm] items-center">
+              <AiFillStar />
+              <AiFillStar />
+              <AiFillStar />
+              <AiFillStar />
+              <AiFillStar />
+            </div>
+            <p className="text-sm font-b800 bg-[orange] text-light rounded-full px-2 flex items-center">
+              4.7
+            </p>
+          </div>
+          <span className="inline-flex items-center gap-1">
+            <p className="bg-red-dark text-light font-b900 px-2 rounded-md">
+              FHD
+            </p>
+            <p className="bg-green-dark text-light font-b900 px-2 rounded-md">
+              Vietsub
+            </p>
+          </span>
+        </div>
+        <div className="absolute bottom-[5px] right-[5px]">
+          <HiMiniPlayCircle className="text-dark text-xxl cursor-pointer" />
         </div>
       </div>
     </React.Fragment>

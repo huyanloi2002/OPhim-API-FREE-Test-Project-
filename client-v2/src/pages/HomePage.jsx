@@ -1,8 +1,5 @@
 import React from "react";
 import TrendingMovie from "../components/TrendingMovie";
-import { MovieCardVertical, MovieCardBanner } from "../components/MovieCard";
-import RecommendedMovie from "../components/RecommendedMovie";
-import Layout from "../components/Layout";
 
 const HomePage = () => {
   return (
@@ -63,9 +60,11 @@ const HomePage = () => {
             </RecommendedMovie>
           </div>
         </div>
-      </Layout>
+        <div className="col-span-6 row-span-6 rounded-3xl bg-opacity-white-0.2"></div>
+      </div>
     </React.Fragment>
   );
 };
 
 export default HomePage;
+
